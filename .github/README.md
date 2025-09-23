@@ -1,22 +1,30 @@
-# SKELETON - Module template
+# Classless Wow Module
 
-[English](README.md) | [Español](README_ES.md)
+[English](README.md)
 
+## Introduction
+The goal of this module is to provide a classless version of the Wotlk version of AzerothCore. The gameplay experience will
+be curated for small groups of players, and there will be no PvP balance. The purpose of this module is to develop overpowered
+builds.
 
-## How to create your own module
+Progression is primarily handled through talent points which are computed based off of the level of the player + the number of
+unlocked achievements. There is currently no cap- although a configuration setting for a talent cap is planned.
 
-1. Use the script `create_module.sh` located in [`modules/`](https://github.com/azerothcore/azerothcore-wotlk/tree/master/modules) to start quickly with all the files you need and your git repo configured correctly (heavily recommended).
-1. You can then use these scripts to start your project: https://github.com/azerothcore/azerothcore-boilerplates
-1. Do not hesitate to compare with some of our newer/bigger/famous modules.
-1. Edit the `README.md` and other files (`include.sh` etc...) to fit your module. Note: the README is automatically created from `README_example.md` when you use the script `create_module.sh`.
-1. Publish your module to our [catalogue](https://www.azerothcore.org/catalogue.html).
+## Implemented Features
+- Talent points are computed based off of the player's achievements and level.
+- Trainers can train any class
+- Players can learn any talent from any tree
 
-
-## How to test your module?
-
-Disable PCH (precompiled headers) and try to compile. To disable PCH, set `-DNOPCH=1` with Cmake (more info [here](http://www.azerothcore.org/wiki/CMake-options)).
-
-If you forgot some headers, it is time to add them!
+## TODOS
+- A UI mod to allow players to select talents from any tree
+- A UI mod to allow players to see their mana, rage, energy, and runic power
+- A UI mod to allow players to access all their spells.
+- Configuration setting to set talent cap
+- Unify the attack power/damage calculations for every class
+- Overhaul the pet system
+- A UI mod to allow players to equip bows/guns/wands/relics/totems/ammunition/etc as any class
+- Validate the dbc files necessary to handle classless wow- a guide to be written for sure: Talent.dbc, TalentTab.dbc, 
+  SkillLineAbility.dbc, SkillRaceClassInfo.dbc, (maybe spell.dbc? I might've modified it unnecessarily)
 
 ## Licensing
 
