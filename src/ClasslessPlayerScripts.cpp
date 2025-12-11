@@ -236,10 +236,10 @@ bool ClasslessPlayerScripts::OnUpdateAttackPowerAndDamageReplaceWithAlternativeC
         }
     }
 
-    player->SetModifierValue(unitMod, BASE_VALUE, baseAttackPower);
+    player->SetStatFlatModifier(unitMod, BASE_VALUE, baseAttackPower);
 
-    float base_attPower = player->GetModifierValue(unitMod, BASE_VALUE) * player->GetModifierValue(unitMod, BASE_PCT);
-    float attPowerMod = player->GetModifierValue(unitMod, TOTAL_VALUE);
+    float base_attPower = player->GetFlatModifierValue(unitMod, BASE_VALUE) * player->GetPctModifierValue(unitMod, BASE_PCT);
+    float attPowerMod = player->GetFlatModifierValue(unitMod, TOTAL_VALUE);
 
     //add dynamic flat mods
     if (ranged) {
@@ -258,7 +258,7 @@ bool ClasslessPlayerScripts::OnUpdateAttackPowerAndDamageReplaceWithAlternativeC
             attPowerMod += int32(player->GetArmor() / (*iter)->GetAmount());
     }
 
-    float attPowerMultiplier = player->GetModifierValue(unitMod, TOTAL_PCT) - 1.0f;
+    float attPowerMultiplier = player->GetPctModifierValue(unitMod, TOTAL_PCT) - 1.0f;
 
     sScriptMgr->OnPlayerAfterUpdateAttackPowerAndDamage(player, level, base_attPower, attPowerMod, attPowerMultiplier,
                                                         ranged);
