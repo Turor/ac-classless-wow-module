@@ -17,6 +17,7 @@ public:
     Optional<bool> OnPlayerIsClass(Player const*, Classes, ClassContext context) override;
     bool OnPlayerLearnTalentUseAlternativeLogic(Player* player, uint32 talentId, uint32 talentRank, bool command) override;
     void OnPlayerCalculateTalentsPoints(Player const* player, uint32& talentPointsForLevel) override;
+    bool OnUpdateAttackPowerAndDamageReplaceWithAlternativeCalculation(Player* player, bool ranged);
 
 private:
     std::unordered_set<uint32> achievements_which_yield_talents_;
