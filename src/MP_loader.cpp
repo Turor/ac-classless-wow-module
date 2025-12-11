@@ -7,7 +7,7 @@
 
 void AddClasslessDatastoreInitializationScripts(ClasslessPlayerScripts*);
 
-void Addclassless_wowScripts()
+void Addac_classless_wow_moduleScripts()
 {
     ClasslessPlayerScripts* classless_player_scripts = AddClasslessPlayerScripts();
     AddClasslessDatastoreInitializationScripts(classless_player_scripts);
