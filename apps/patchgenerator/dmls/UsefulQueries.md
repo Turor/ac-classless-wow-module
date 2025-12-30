@@ -13,3 +13,41 @@ where SkillLineAbility.id in (
         AND SkillLine.display_name_lang_en_gb not like '%Language%'
         AND SkillLine.display_name_lang_en_gb not like '%Pet%');
 ```
+
+Currently working:
+- Talent
+- SkillLineAbility
+- ChrClasses
+- SkillRaceClassInfo
+
+Order:
+Affliction
+Arcane
+Arms
+Assassination
+Balance
+Beast Mastery
+Blood
+Combat
+Demonology
+Destruction
+Discipline
+Elemental
+Enhancement
+Feral Combat
+Fire
+Frost
+Frost
+Fury
+Holy
+Holy
+Marksmanship
+Protection
+Protection
+Restoration
+Restoration
+Retribution
+Shadow
+Subtlety
+Survival
+Unholy
