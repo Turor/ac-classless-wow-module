@@ -17,14 +17,17 @@ unlocked achievements. There is currently no cap- although a configuration setti
 
 ## TODOS
 - A UI mod to allow players to select talents from any tree
-- A UI mod to allow players to see their mana, rage, energy, and runic power
+- A UI mod to allow players to see their mana, rage, energy, TODO runic power, TODO runes
+- Fix warrior, rogue, and death knight mana
 - A UI mod to allow players to access all their spells.
 - Configuration setting to set talent cap
-- Unify the attack power/damage calculations for every class
 - Overhaul the pet system
-- A UI mod to allow players to equip bows/guns/wands/relics/totems/ammunition/etc as any class
-- Validate the dbc files necessary to handle classless wow- a guide to be written for sure: Talent.dbc, TalentTab.dbc, 
-  SkillLineAbility.dbc, SkillRaceClassInfo.dbc, (maybe spell.dbc? I might've modified it unnecessarily)
+- Movement speed QoL spell (AuraInterruptFlags 32)
+- Increase out of combat mana regen?
+- Make Shaman Totem UI work for all classes
+
+## Useful commands
+- cargo run -p wow_custom_dbc -- wrath -o /usr/games/wow/server/data -i /usr/games/wow/
 
 ## Licensing
 

@@ -1,0 +1,6 @@
+[submodule "tools/WoW-Spell-Editor"]
+	path = tools/WoW-Spell-Editor
+	url = https://github.com/stoneharry/WoW-Spell-Editor.git
+[submodule "apps/patchgenerator/wow_dbc"]
+	path = apps/patchgenerator/wow_dbc
+	url = https://github.com/Turor/wow_dbc.git
