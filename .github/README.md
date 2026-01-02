@@ -24,6 +24,7 @@ unlocked achievements. There is currently no cap- although a configuration setti
 - Overhaul the pet system
 - Movement speed QoL spell (AuraInterruptFlags 32)
 - Increase out of combat mana regen?
+- Make Shaman Totem UI work for all classes
 
 ## Useful commands
 - cargo run -p wow_custom_dbc -- wrath -o /usr/games/wow/server/data -i /usr/games/wow/
