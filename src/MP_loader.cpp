@@ -2,14 +2,13 @@
  * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU AGPL v3 license: https://github.com/azerothcore/azerothcore-wotlk/blob/master/LICENSE-AGPL3
  */
 
-// From SC
-void AddMyPlayerScripts();
+#include "ClasslessPlayerScripts.h"
 
-// Add all
-// cf. the naming convention https://github.com/azerothcore/azerothcore-wotlk/blob/master/doc/changelog/master.md#how-to-upgrade-4
-// additionally replace all '-' in the module folder name with '_' here
-void Addskeleton_moduleScripts()
+void AddClasslessDatastoreInitializationScripts(ClasslessPlayerScripts*);
+
+void Addac_classless_wow_moduleScripts()
 {
-    AddMyPlayerScripts();
+    ClasslessPlayerScripts* classless_player_scripts = AddClasslessPlayerScripts();
+    AddClasslessDatastoreInitializationScripts(classless_player_scripts);
 }
 
