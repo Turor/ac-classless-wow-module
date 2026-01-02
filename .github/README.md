@@ -1,5 +1,7 @@
 # Classless Wow Module
 
+This module needs the [azerothcore-wotlk-classless](https://github.com/Turor/azerothcore-wotlk-classless) fork to function.
+
 [English](README.md)
 
 ## Introduction
