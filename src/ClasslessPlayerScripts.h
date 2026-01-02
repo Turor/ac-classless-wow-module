@@ -18,6 +18,7 @@ public:
     bool OnPlayerLearnTalentUseAlternativeLogic(Player* player, uint32 talentId, uint32 talentRank, bool command) override;
     void OnPlayerCalculateTalentsPoints(Player const* player, uint32& talentPointsForLevel) override;
     bool OnUpdateAttackPowerAndDamageReplaceWithAlternativeCalculation(Player* player, bool ranged) override;
+    bool OnPlayerHasActivePowerType(Player const* player, Powers power) override;
 
 private:
     std::unordered_set<uint32> achievements_which_yield_talents_;

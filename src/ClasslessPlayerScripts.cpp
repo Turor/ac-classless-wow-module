@@ -279,6 +279,9 @@ bool ClasslessPlayerScripts::OnUpdateAttackPowerAndDamageReplaceWithAlternativeC
     return true;
 }
 
+bool ClasslessPlayerScripts::OnPlayerHasActivePowerType(Player const *player, Powers power) {
+    return true;
+}
 
 ClasslessPlayerScripts *AddClasslessPlayerScripts() {
     auto *cps = new ClasslessPlayerScripts(); // ScriptMgr takes ownership
