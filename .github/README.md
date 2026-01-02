@@ -25,7 +25,8 @@ unlocked achievements. There is currently no cap- although a configuration setti
 - Movement speed QoL spell (AuraInterruptFlags 32)
 - Increase out of combat mana regen?
 
-##
+## Useful commands
+- cargo run -p wow_custom_dbc -- wrath -o /usr/games/wow/server/data -i /usr/games/wow/
 
 ## Licensing
 

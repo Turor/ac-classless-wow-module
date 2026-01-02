@@ -47,3 +47,8 @@ local.properties
 .loadpath
 .project
 .cproject
+
+#
+# Scratch pads
+#
+Commands.md
