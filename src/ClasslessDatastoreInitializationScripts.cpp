@@ -4,7 +4,6 @@
 #include "DatabaseEnv.h"
 #include <unordered_set>
 
-
 void ClasslessDatastoreInitializationScripts::OnAfterDatabasesLoaded(uint32) {
     uint32 oldMSTime = getMSTime();
     std::unordered_set<uint32> ids;
