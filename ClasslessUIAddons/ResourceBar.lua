@@ -39,7 +39,6 @@ function ClasslessCooldownFrame_SetTimer(self, start, duration, enable)
 		self:SetCooldown(start, duration);
 		self:Show();
 	else
-        print("Hiding cooldown"..self:GetName())
 		self:Hide();
 	end
 end
@@ -135,7 +134,6 @@ end
 local function GetRuneGridPosition(index)
     local row = math.floor((index - 1) / 2) + 1   -- 1..3
     local col = ((index - 1) % 2) + 1              -- 1..2
-    print(row..col)
     return row, col
 end
 
