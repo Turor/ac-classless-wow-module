@@ -1,10 +1,159 @@
 -- this is a UI for displaying energy/rage
 
+local FirstTime = true;
+local CLASSLESS_RUNETYPE_BLOOD = 1;
+local CLASSLESS_RUNETYPE_UNHOLY = 2;
+local CLASSLESS_RUNETYPE_FROST = 3;
+local CLASSLESS_RUNETYPE_DEATH = 4;
 
+local classlessRuneIconTextures = {};
+classlessRuneIconTextures[CLASSLESS_RUNETYPE_BLOOD] = "Interface\\PlayerFrame\\UI-PlayerFrame-Deathknight-Blood";
+classlessRuneIconTextures[CLASSLESS_RUNETYPE_UNHOLY] = "Interface\\PlayerFrame\\UI-PlayerFrame-Deathknight-Unholy";
+classlessRuneIconTextures[CLASSLESS_RUNETYPE_FROST] = "Interface\\PlayerFrame\\UI-PlayerFrame-Deathknight-Frost";
+classlessRuneIconTextures[CLASSLESS_RUNETYPE_DEATH] = "Interface\\PlayerFrame\\UI-PlayerFrame-Deathknight-Death";
+
+local classlessRuneTextures = {
+	[CLASSLESS_RUNETYPE_BLOOD] = "Interface\\PlayerFrame\\UI-PlayerFrame-DeathKnight-Blood-Off.tga",
+	[CLASSLESS_RUNETYPE_UNHOLY] = "Interface\\PlayerFrame\\UI-PlayerFrame-DeathKnight-Death-Off.tga",
+	[CLASSLESS_RUNETYPE_FROST] = "Interface\\PlayerFrame\\UI-PlayerFrame-DeathKnight-Frost-Off.tga",
+	[CLASSLESS_RUNETYPE_DEATH] = "Interface\\PlayerFrame\\UI-PlayerFrame-Deathknight-Chromatic-Off.tga",
+}
+
+local classlessRuneColors = {
+	[CLASSLESS_RUNETYPE_BLOOD] = {1, 0, 0},
+	[CLASSLESS_RUNETYPE_UNHOLY] = {0, 0.5, 0},
+	[CLASSLESS_RUNETYPE_FROST] = {0, 1, 1},
+	[CLASSLESS_RUNETYPE_DEATH] = {0.8, 0.1, 1},
+}
+local classlessRuneMapping = {
+	[1] = "BLOOD",
+	[2] = "UNHOLY",
+	[3] = "FROST",
+	[4] = "DEATH",
+}
+
+
+function ClasslessCooldownFrame_SetTimer(self, start, duration, enable)
+	if ( start > 0 and duration > 0 and enable > 0) then
+
+		self:SetCooldown(start, duration);
+		self:Show();
+	else
+        print("Hiding cooldown"..self:GetName())
+		self:Hide();
+	end
+end
+
+function ClasslessRuneButton_OnLoad (self)
+	ClasslessRuneButton_Update(self);
+end
+
+function ClasslessRuneButton_OnUpdate (self, elapsed)
+	local cooldown = self.cooldown;
+	local start, duration, runeReady = GetRuneCooldown(self:GetID());
+	local displayCooldown = (runeReady and 0) or 1;
+	ClasslessCooldownFrame_SetTimer(cooldown, start, duration, displayCooldown);
+
+	if ( runeReady ) then
+		self:SetScript("OnUpdate", nil);
+	end
+end
+
+function ClasslessRuneButton_Update (self, classlessRuneType, dontFlash)
+	local runeType = self.runeType
+
+	if ( (not dontFlash) and (classlessRuneType) and (classlessRuneType ~= self.rune.runeType)) then
+		self.shineTex:SetVertexColor(unpack(classlessRuneColors[runeType]));
+		ClasslessRuneButton_ShineFadeIn(self.shineTex)
+	end
+
+	if (classlessRuneType) then
+		self.runeTex:SetTexture(classlessRuneIconTextures[classlessRuneType]);
+		-- self.fill:SetTexture(iconTextures[classlessRuneType]);
+		self.runeTex:Show();
+		-- self.fill:Show();
+	else
+		self.runeTex:Hide();
+		-- self.fill:Hide();
+		self.tooltipText = nil;
+	end
+
+end
+
+function ClasslessRuneButton_OnEnter(self)
+	if ( self.tooltipText ) then
+		GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+		GameTooltip:SetText(self.tooltipText);
+		GameTooltip:Show();
+	end
+end
+
+function ClasslessRuneButton_OnLeave(self)
+	GameTooltip:Hide();
+end
+
+function ClasslessRuneFrame_OnEvent (self, event, ...)
+	if ( event == "RUNE_POWER_UPDATE" ) then
+		local rune, usable = ...;
+		if ( not usable and rune and self.runes[rune] ) then
+			self.runes[rune]:SetScript("OnUpdate", ClasslessRuneButton_OnUpdate);
+		elseif ( usable and rune and self.runes[rune] ) then
+			self.runes[rune].shine.shineTex:SetVertexColor(1, 1, 1);
+			ClasslessRuneButton_ShineFadeIn(self.runes[rune].shine)
+		end
+	elseif ( event == "RUNE_TYPE_UPDATE" ) then
+        local rune = ...;
+        if ( rune ) then
+            ClasslessRuneButton_Update(self.runes[rune], rune);
+        end
+    end
+end
+
+function ClasslessRuneFrame_AddRune (runeFrame, rune)
+	tinsert(runeFrame.runes, rune);
+end
+
+function ClasslessRuneButton_ShineFadeIn(self)
+	if self.shining then
+		return
+	end
+	local fadeInfo={
+	mode = "IN",
+	timeToFade = 0.5,
+	finishedFunc = RuneButton_ShineFadeOut,
+	finishedArg1 = self,
+	}
+	self.shining=true;
+	UIFrameFade(self, fadeInfo);
+end
+
+function ClasslessRuneButton_ShineFadeOut(self)
+	self.shining=false;
+	UIFrameFadeOut(self, 0.5);
+end
+
+local function GetRuneGridPosition(index)
+    local row = math.floor((index - 1) / 2) + 1   -- 1..3
+    local col = ((index - 1) % 2) + 1              -- 1..2
+    print(row..col)
+    return row, col
+end
+
+local function GetRuneTypeForIndex(index)
+    if index == 1 or index == 2 then
+        return 1
+    elseif index == 3 or index == 4 then
+        return 2
+    elseif index == 5 or index == 6 then
+        return 3
+    else
+        return 4
+    end
+end
 
 
 local MainFrame = CreateFrame("Frame","MainFrame",UIParent,nil)
-MainFrame:SetSize(100,63)
+MainFrame:SetSize(100,80)
 MainFrame:SetPoint("TOPLEFT", 258, -25)
 MainFrame:SetMovable(true)
 MainFrame:EnableMouse(true)
@@ -24,8 +173,165 @@ MainFrame:RegisterEvent("ADDON_LOADED")
 MainFrame:RegisterEvent("PLAYER_LOGOUT")
 
 
+-- Parent frame
+local ClasslessRuneFrame = CreateFrame("Frame", "ClasslessRuneFrame", MainFrame)
+ClasslessRuneFrame:SetSize(32, 80)
+ClasslessRuneFrame:SetPoint("TOPLEFT", MainFrame, "TOPLEFT", -52, 0)
+
+ClasslessRuneFrame.runes = {};
+
+-- Constants
+local RUNE_COUNT = 6
+local RUNE_SIZE = 24
+local COL_SPACING = 3
+local ROW_SPACING = 3
+
+-- Storage table (preferred over raw globals)
+ClasslessRunes = {}
+
+for i = 1, RUNE_COUNT do
+    -- Button
+    local rune = CreateFrame(
+        "Button",
+        "ClasslessRune" .. i,
+        ClasslessRuneFrame,
+        nil
+    )
+    rune:SetSize(RUNE_SIZE, RUNE_SIZE)
+
+    local row, col = GetRuneGridPosition(i)
+    rune:ClearAllPoints()
+
+    local xOffset = (col - 1) * (RUNE_SIZE + COL_SPACING)
+    local yOffset = -((row - 1) * (RUNE_SIZE + ROW_SPACING))
+
+    rune:SetPoint("TOPLEFT", ClasslessRuneFrame, "TOPLEFT", xOffset, yOffset)
 
 
+    local runeType = GetRuneTypeForIndex(i)
+    rune.runeType = runeType
+    rune.gridRow  = row
+    rune.gridCol  = col
+
+    -- ============================================================
+    -- Rune Texture (ARTWORK)
+    -- ============================================================
+
+    local runeTex = rune:CreateTexture(
+        "ClasslessRune" .. i .. "Icon",
+        "ARTWORK"
+    )
+    runeTex:SetSize(24, 24)
+    runeTex:SetPoint("CENTER", rune, "CENTER", 0, -1)
+    runeTex:SetTexture(classlessRuneIconTextures[runeType])
+
+
+    -- ============================================================
+    -- Border Frame
+    -- ============================================================
+    local border = CreateFrame(
+        "Frame",
+        "ClasslessRune" .. i .. "Border",
+        rune
+    )
+    border:SetSize(18, 18)
+    border:SetPoint("CENTER", rune, "CENTER", 0, -1)
+    border:SetFrameLevel(rune:GetFrameLevel()-1)
+
+    local borderTex = border:CreateTexture(
+        "ClasslessRune" .. i .. "BorderTexture",
+        "OVERLAY"
+    )
+    borderTex:SetAllPoints(border)
+    borderTex:SetTexture(classlessRuneTextures[runeType])
+    borderTex:SetVertexColor(0.6, 0.6, 0.6, 1)
+    border.borderTex = borderTex
+
+    -- ============================================================
+    -- Shine Frame (hidden by default)
+    -- ============================================================
+    local shine = CreateFrame(
+        "Frame",
+        "ClasslessRune" .. i .. "Shine",
+        rune
+    )
+    shine:SetAllPoints(rune)
+    shine:SetFrameStrata("MEDIUM")
+    shine:Hide()
+
+    local shineTex = shine:CreateTexture(
+        "ClasslessRune" .. i .. "ShineTexture",
+        "OVERLAY"
+    )
+    shineTex:SetTexture("Interface\\ComboFrame\\ComboPoint")
+    shineTex:SetBlendMode("ADD")
+    shineTex:SetSize(60, 35)
+    shineTex:SetPoint("CENTER", shine, "CENTER", 0, 0)
+    shineTex:SetTexCoord(0.5625, 1, 0, 1)
+    shine.shineTex = shineTex
+
+    -- ============================================================
+    -- Cooldown
+    -- ============================================================
+    local cd = CreateFrame(
+        "Cooldown",
+        "ClasslessRune" .. i .. "Cooldown",
+        rune,
+        "CooldownFrameTemplate"
+    )
+    cd:SetSize(15,15)
+    cd:ClearAllPoints()
+    cd:SetPoint("CENTER", rune, "CENTER", 0, -1)
+    cd:SetDrawEdge(true)
+    cd:SetFrameLevel(rune:GetFrameLevel() + 2)
+    cd:SetReverse(true)
+    cd:Show()
+
+
+    -- ============================================================
+    -- Scripts
+    -- ============================================================
+    rune:SetScript("OnLoad", ClasslessRuneButton_OnLoad)
+    rune:SetScript("OnEnter", ClasslessRuneButton_OnEnter)
+    rune:SetScript("OnLeave", ClasslessRuneButton_OnLeave)
+
+    -- Store references
+    rune.cooldown = cd
+    rune.runeTex = runeTex
+    rune.border = border
+    rune.shine = shine
+
+    if runeType == 1 then
+        rune.tooltipText = _G["COMBAT_TEXT_RUNE_BLOOD"]
+    elseif runeType == 2 then
+        rune.tooltipText = _G["COMBAT_TEXT_RUNE_UNHOLY"]
+    elseif runeType == 3 then
+        rune.tooltipText = _G["COMBAT_TEXT_RUNE_FROST"]
+    else
+        rune.tooltipText = _G["COMBAT_TEXT_RUNE_DEATH"]
+    end
+
+    rune.runeTex:Show()
+    rune.border:Show()
+    rune:SetID(i)
+    rune:Show()
+
+    ClasslessRunes[i] = rune
+    _G["ClasslessRune" .. i] = rune -- optional global for legacy access
+    ClasslessRuneFrame_AddRune(ClasslessRuneFrame,rune)
+end
+
+for i = 1, RUNE_COUNT do
+ClasslessRuneButton_Update(ClasslessRunes[i], ClasslessRunes[i].runeType, true)
+end
+
+
+
+ClasslessRuneFrame:RegisterEvent("RUNE_POWER_UPDATE");
+ClasslessRuneFrame:RegisterEvent("RUNE_TYPE_UPDATE");
+ClasslessRuneFrame:RegisterEvent("PLAYER_ENTERING_WORLD");
+
+ClasslessRuneFrame:SetScript("OnEvent", ClasslessRuneFrame_OnEvent);
 
 
 
@@ -143,6 +449,53 @@ function RageFrame_eventHandler(self, event, ...)
 	end
 end
 
+local RunicFrame = CreateFrame("Frame", "RunicFrame", MainFrame, nil)
+RunicFrame:SetSize(100, 20)
+
+RunicStatusBar = CreateFrame("StatusBar", nil, RunicFrame)
+RunicStatusBar:SetPoint("LEFT")
+RunicStatusBar:SetPoint("RIGHT", 0, 0)
+RunicStatusBar:SetMinMaxValues(0, 100)
+RunicStatusBar:SetStatusBarColor(0, 0.82, 1) -- Standard Runic Power Cyan
+
+local RunicBG = RunicStatusBar:CreateTexture(nil, "BACKGROUND")
+RunicBG:SetAllPoints(RunicStatusBar)
+RunicBG:SetTexture(0.2, 0.2, 0.2, 1.0) -- Gray with 50% transparency
+
+local RunicFont = RunicStatusBar:CreateFontString("RunicF")
+RunicFont:SetFont("Fonts\\FRIZQT__.TTF", 11)
+RunicFont:SetShadowOffset(1, -1)
+RunicFont:SetPoint("CENTER")
+
+function RunicFrame_eventHandler(self, event, ...)
+    local current_runic = UnitPower("player", 6)
+    local max_runic = UnitPowerMax("player", 6)
+
+    local current_runic_percent = 1
+    if max_runic > 0 then
+        current_runic_percent = (current_runic / max_runic) * 100
+    end
+
+    RunicStatusBar:SetValue(current_runic_percent)
+    if Runic_ShowText == true then
+        RunicFont:SetText(current_runic.."/"..max_runic)
+    else
+        RunicFont:SetText("")
+    end
+end
+
+RunicFrame:RegisterEvent("UNIT_RUNIC_POWER")
+RunicFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
+RunicFrame:SetScript("OnEvent", RunicFrame_eventHandler)
+
+-- Update the main frame update loop to include Runic
+RunicFrame:SetScript("OnUpdate", function(self, sinceLastUpdate)
+    self.sinceLastUpdate = (self.sinceLastUpdate or 0) + sinceLastUpdate
+    if (self.sinceLastUpdate >= .1) then
+        RunicFrame_eventHandler()
+        self.sinceLastUpdate = 0
+    end
+end)
 
 
 
@@ -242,6 +595,12 @@ DropDownMenu.initialize = function(self, level)
 			ManaConfigFrame:Show()
 			end
 		UIDropDownMenu_AddButton(info, level)
+
+		info.text = "Runic Config"
+        info.func = function()
+            RunicConfigFrame:Show()
+            end
+        UIDropDownMenu_AddButton(info, level)
 		
 		info.text = "All Bars Config"
 		info.func = function()
@@ -262,6 +621,91 @@ end
 MainFrame:SetScript("OnMouseDown", OnMouseDown_MainFrame)
 
 -- below is the config frames
+
+RunicConfigFrame = CreateFrame("Frame","RunicConfigFrame",UIParent,nil)
+RunicConfigFrame:SetSize(250,200)
+RunicConfigFrame:SetPoint("CENTER")
+RunicConfigFrame:EnableMouse(true)
+RunicConfigFrame:SetMovable(true)
+RunicConfigFrame:RegisterForDrag("LeftButton")
+RunicConfigFrame:SetBackdrop({
+	bgFile = "Interface/DialogFrame/UI-DialogBox-Background-Dark",
+	edgeFile = "Interface/DialogFrame/UI-DialogBox-Border",
+	edgeSize = 15,
+})
+RunicConfigFrame:SetScript("OnDragStart", RunicConfigFrame.StartMoving)
+RunicConfigFrame:SetScript("OnHide", RunicConfigFrame.StopMovingOrSizing)
+RunicConfigFrame:SetScript("OnDragStop", RunicConfigFrame.StopMovingOrSizing)
+
+RunicConfigFrame_CloseButton = CreateFrame("Button", "RunicConfigFrame_CloseButton", RunicConfigFrame, "UIPanelCloseButton")
+		RunicConfigFrame_CloseButton:SetPoint("TOPRIGHT", -5, -5)
+		RunicConfigFrame_CloseButton:EnableMouse(true)
+		RunicConfigFrame_CloseButton:SetSize(27, 27)
+RunicConfigFrame:Hide()
+
+local RunicConfigFrame_TitleBar = CreateFrame("Frame", "RunicConfigFrame_TitleBar", RunicConfigFrame, nil)
+        RunicConfigFrame_TitleBar:SetSize(100, 25)
+        RunicConfigFrame_TitleBar:SetBackdrop({
+            bgFile = "Interface/CHARACTERFRAME/UI-Party-Background",
+            edgeFile = "Interface/DialogFrame/UI-DialogBox-Border",
+            tile = true,
+            edgeSize = 15,
+            tileSize = 15,
+            insets = { left = 5, right = 5, top = 5, bottom = 5 }
+        })
+		RunicConfigFrame_TitleBar:SetPoint("TOP", 20, 9)
+		local RunicConfigFrame_TitleText = RunicConfigFrame_TitleBar:CreateFontString("RunicConfigFrame_TitleText")
+        RunicConfigFrame_TitleText:SetFont("Fonts\\FRIZQT__.TTF", 13)
+        RunicConfigFrame_TitleText:SetSize(225, 5)
+        RunicConfigFrame_TitleText:SetPoint("CENTER", 0, 0)
+        RunicConfigFrame_TitleText:SetText("|cffFFC125Runic Power|r")
+
+RunicConfigFrame_SubmitButton = CreateFrame("Button","RunicConfigFrame_SubmitButton",RunicConfigFrame,nil)
+RunicConfigFrame_SubmitButton:SetSize(50,20)
+RunicConfigFrame_SubmitButton:SetPoint("BOTTOM", 20, 5)
+RunicConfigFrame_SubmitButton_Text = RunicConfigFrame_SubmitButton:CreateFontString("RunicConfigFrame_SubmitButton_FS")
+RunicConfigFrame_SubmitButton_Text:SetFont("Fonts\\FRIZQT__.TTF", 11)
+RunicConfigFrame_SubmitButton_Text:SetShadowOffset(1, -1)
+RunicConfigFrame_SubmitButton_Text:SetPoint("Center")
+RunicConfigFrame_SubmitButton:SetFontString(RunicConfigFrame_SubmitButton_Text)
+RunicConfigFrame_SubmitButton:SetText("Apply")
+RunicConfigFrame_SubmitButton_Texture = RunicConfigFrame_SubmitButton:CreateTexture("RunicConfigFrame_SubmitButton_texture")
+RunicConfigFrame_SubmitButton_Texture:SetTexture(.9,.2,0,.8)
+RunicConfigFrame_SubmitButton_Texture:SetAllPoints(RunicConfigFrame_SubmitButton)
+RunicConfigFrame_SubmitButton:SetNormalTexture(RunicConfigFrame_SubmitButton_Texture)
+
+local function apply_runic_changes(self, button)
+	Runic_Textures[1] = RunicRSlider:GetValue() / 100
+	Runic_Textures[2] = RunicGSlider:GetValue() / 100
+	Runic_Textures[3] = RunicBSlider:GetValue() / 100
+	if RunicTextChecker:GetChecked() == 1 then
+		Runic_ShowText = true
+	else
+		Runic_ShowText = false
+	end
+	init_loadUp()
+end
+RunicConfigFrame_SubmitButton:SetScript("OnMouseDown", apply_runic_changes)
+
+-- Runic Sliders (R, G, B)
+local RunicRSlider = CreateFrame("Slider", "RunicRSlider", RunicConfigFrame, "OptionsSliderTemplate")
+RunicRSlider:SetPoint("CENTER", 20, 50)
+RunicRSlider:SetMinMaxValues(0, 100)
+RunicRSlider:SetScript("OnValueChanged", function(self) _G[self:GetName() .."Text"]:SetText("Red: "..self:GetValue()) end)
+
+local RunicGSlider = CreateFrame("Slider", "RunicGSlider", RunicConfigFrame, "OptionsSliderTemplate")
+RunicGSlider:SetPoint("CENTER", 20, 15)
+RunicGSlider:SetMinMaxValues(0, 100)
+RunicGSlider:SetScript("OnValueChanged", function(self) _G[self:GetName() .."Text"]:SetText("Green: "..self:GetValue()) end)
+
+local RunicBSlider = CreateFrame("Slider", "RunicBSlider", RunicConfigFrame, "OptionsSliderTemplate")
+RunicBSlider:SetPoint("CENTER", 20, -20)
+RunicBSlider:SetMinMaxValues(0, 100)
+RunicBSlider:SetScript("OnValueChanged", function(self) _G[self:GetName() .."Text"]:SetText("Blue: "..self:GetValue()) end)
+
+local RunicTextChecker = CreateFrame("CheckButton","RunicTextChecker",RunicConfigFrame, "ChatConfigCheckButtonTemplate")
+RunicTextChecker:SetPoint("CENTER", -20, -50)
+_G[RunicTextChecker:GetName().."Text"]:SetText("Show Text")
 
 EnergyConfigFrame = CreateFrame("Frame","EnergyConfigFrame",UIParent,nil)
 EnergyConfigFrame:SetSize(250,200)
@@ -343,6 +787,11 @@ function init_loadUp()
 	ManaGSlider:SetValue(Mana_Textures[2] * 100)
 	ManaBSlider:SetValue(Mana_Textures[3] * 100)
 
+	RunicStatusBar:SetStatusBarColor(Runic_Textures[1], Runic_Textures[2], Runic_Textures[3])
+    RunicRSlider:SetValue(Runic_Textures[1] * 100)
+    RunicGSlider:SetValue(Runic_Textures[2] * 100)
+    RunicBSlider:SetValue(Runic_Textures[3] * 100)
+
 	MainFrame:SetSize(ConfigFrame_varis[2],ConfigFrame_varis[3] * 3 + 2)
 	EnergyFrame:SetSize(ConfigFrame_varis[2],ConfigFrame_varis[3])
 	EnergyStatusBar:SetHeight(ConfigFrame_varis[3])
@@ -350,6 +799,12 @@ function init_loadUp()
 	RageStatusBar:SetHeight(ConfigFrame_varis[3])
 	ManaFrame:SetSize(ConfigFrame_varis[2],ConfigFrame_varis[3])
 	ManaStatusBar:SetHeight(ConfigFrame_varis[3])
+	RunicFrame:SetSize(ConfigFrame_varis[2], ConfigFrame_varis[3])
+    RunicStatusBar:SetHeight(ConfigFrame_varis[3])
+    RunicStatusBar:SetStatusBarTexture("Interface\\AddOns\\ClasslessUIAddons\\textures\\normTex.tga")
+
+    -- Position Runic below Rage (assuming default stack)
+
 
 
 	WidthSlider:SetValue(ConfigFrame_varis[2])
@@ -358,13 +813,15 @@ function init_loadUp()
 
 
 	if ConfigFrame_varis[1] == true then
-		EnergyFrame:SetPoint("TOP")
-		ManaFrame:SetPoint("CENTER")
-		RageFrame:SetPoint("BOTTOM")
+		EnergyFrame:SetPoint("TOP", 0, 0)
+		ManaFrame:SetPoint("TOP", 0, -20)
+		RageFrame:SetPoint("TOP", 0, -40)
+		RunicFrame:SetPoint("TOP", 0, -60)
 	else
-		EnergyFrame:SetPoint("BOTTOM")
-		ManaFrame:SetPoint("CENTER")
-		RageFrame:SetPoint("TOP")
+		EnergyFrame:SetPoint("BOTTOM",0,0)
+		ManaFrame:SetPoint("BOTTOM",0,20)
+		RageFrame:SetPoint("BOTTOM",0,40)
+		RunicFrame:SetPoint("BOTTOM",0,60)
 	end
 end
 
@@ -910,6 +1367,16 @@ function MainFrame:OnEvent(event, arg1)
 				ManaTextChecker:SetChecked(false)
 			end
 		end
+
+        if Runic_Textures == nil then
+                Runic_Textures = {0, 0.82, 1}
+        end
+        if Runic_ShowText == nil then
+            Runic_ShowText = true
+            RunicTextChecker:SetChecked(true)
+        else
+            RunicTextChecker:SetChecked(Runic_ShowText)
+        end
 
 		if ConfigFrame_varis == nil then
 			ConfigFrame_varis = {}

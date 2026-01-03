@@ -103,6 +103,10 @@
 
     </Button>
 
+    <Button name="ClasslessTalentButtonTemplate" inherits="ACClasslessTreeButtonTemplate" virtual="true">
+        <Size x="16" y="16"/>
+    </Button>
+
 
     <!-- =================================== -->
     <!--  Spell button template (simple)     -->
@@ -184,7 +188,7 @@
         </Scripts>
 
         <Frames>
-            <Frame name="$parentClassSelectorFrame" parentKey="ClassSelectorFrame">
+            <Frame name="ClasslessClassSelectorFrame" parentKey="ClassSelectorFrame">
                 <size x="1000" y="100"/>
                 <Anchors>
                     <Anchor point="TOPLEFT" x="0" y="0"/>
@@ -196,7 +200,7 @@
                     </OnLoad>
                 </Scripts>
                 <Frames>
-                    <Button name="$parentDeathKnightButton" parentKey="DeathKnightButton"
+                    <Button name="ClasslessDeathKnightButton" parentKey="DeathKnightButton"
                             inherits="ACClasslessClassButtonTemplate">
                         <Anchors>
                             <Anchor point="TOPLEFT" y="-32" x="45"/>
@@ -209,7 +213,7 @@
                         </Scripts>
                     </Button>
 
-                    <Button name="$parentDruidButton" parentKey="DruidButton"
+                    <Button name="ClasslessDruidButton" parentKey="DruidButton"
                             inherits="ACClasslessClassButtonTemplate">
                         <Anchors>
                             <Anchor point="TOPLEFT" y="-32" x="139"/>
@@ -222,7 +226,7 @@
                         </Scripts>
                     </Button>
 
-                    <Button name="$parentHunterButton" parentKey="HunterButton"
+                    <Button name="ClasslessHunterButton" parentKey="HunterButton"
                             inherits="ACClasslessClassButtonTemplate">
                         <Anchors>
                             <Anchor point="TOPLEFT" y="-32" x="233"/>
@@ -235,7 +239,7 @@
                         </Scripts>
                     </Button>
 
-                    <Button name="$parentMageButton" parentKey="MageButton"
+                    <Button name="ClasslessMageButton" parentKey="MageButton"
                             inherits="ACClasslessClassButtonTemplate">
                         <Anchors>
                             <Anchor point="TOPLEFT" y="-32" x="327"/>
@@ -248,7 +252,7 @@
                         </Scripts>
                     </Button>
 
-                    <Button name="$parentPaladinButton" parentKey="PaladinButton"
+                    <Button name="ClasslessPaladinButton" parentKey="PaladinButton"
                             inherits="ACClasslessClassButtonTemplate">
                         <Anchors>
                             <Anchor point="TOPLEFT" y="-32" x="421"/>
@@ -261,7 +265,7 @@
                         </Scripts>
                     </Button>
 
-                    <Button name="$parentPriestButton" parentKey="PriestButton"
+                    <Button name="ClasslessPriestButton" parentKey="PriestButton"
                             inherits="ACClasslessClassButtonTemplate">
                         <Anchors>
                             <Anchor point="TOPLEFT" y="-32" x="515"/>
@@ -274,7 +278,7 @@
                         </Scripts>
                     </Button>
 
-                    <Button name="$parentRogueButton" parentKey="RogueButton"
+                    <Button name="ClasslessRogueButton" parentKey="RogueButton"
                             inherits="ACClasslessClassButtonTemplate">
                         <Anchors>
                             <Anchor point="TOPLEFT" y="-32" x="609"/>
@@ -287,7 +291,7 @@
                         </Scripts>
                     </Button>
 
-                    <Button name="$parentShamanButton" parentKey="ShamanButton"
+                    <Button name="ClasslessShamanButton" parentKey="ShamanButton"
                             inherits="ACClasslessClassButtonTemplate">
                         <Anchors>
                             <Anchor point="TOPLEFT" y="-32" x="703"/>
@@ -300,7 +304,7 @@
                         </Scripts>
                     </Button>
 
-                    <Button name="$parentWarlockButton" parentKey="WarlockButton"
+                    <Button name="ClasslessWarlockButton" parentKey="WarlockButton"
                             inherits="ACClasslessClassButtonTemplate">
                         <Anchors>
                             <Anchor point="TOPLEFT" y="-32" x="797"/>
@@ -313,7 +317,7 @@
                         </Scripts>
                     </Button>
 
-                    <Button name="$parentWarriorButton" parentKey="WarriorButton"
+                    <Button name="ClasslessWarriorButton" parentKey="WarriorButton"
                             inherits="ACClasslessClassButtonTemplate">
                         <Anchors>
                             <Anchor point="TOPLEFT" y="-32" x="891"/>
@@ -328,14 +332,14 @@
                 </Frames>
             </Frame>
 
-            <Frame name="$parentTreeSelectorFrame" parentKey="TreeSelectorFrame">
+            <Frame name="ClasslessTreeSelectorFrame" parentKey="TreeSelectorFrame">
                 <Size x="1000" y="100"/>
                 <Anchors>
                     <Anchor point="TOPLEFT" x="0" y="-100"/>
                 </Anchors>
                 <Frames>
 
-                    <Button name="$parentTreeTab1" parentKey="TreeTab1" inherits="ACClasslessTreeButtonTemplate" text="Blood">
+                    <Button name="ClasslessTreeTab1" parentKey="TreeTab1" inherits="ACClasslessTreeButtonTemplate" text="Blood">
                         <Size x="120" y="40"/>
                         <Anchors>
                             <Anchor point="TOPLEFT" x="20" y="-10"/>
@@ -347,10 +351,10 @@
                     </Button>
 
 
-                    <Button name="$parentTreeTab2" parentKey="TreeTab2" inherits="ACClasslessTreeButtonTemplate" text="Frost">
+                    <Button name="ClasslessTreeTab2" parentKey="TreeTab2" inherits="ACClasslessTreeButtonTemplate" text="Frost">
                         <Size x="120" y="40"/>
                         <Anchors>
-                            <Anchor point="LEFT" relativeTo="$parentTreeTab1" relativePoint="RIGHT" x="10"
+                            <Anchor point="LEFT" relativeTo="ClasslessTreeTab1" relativePoint="RIGHT" x="10"
                                     y="0"/>
                         </Anchors>
                         <Scripts>
@@ -360,10 +364,10 @@
                     </Button>
 
 
-                    <Button name="$parentTreeTab3" parentKey="TreeTab3" inherits="ACClasslessTreeButtonTemplate" text="Unholy">
+                    <Button name="ClasslessTreeTab3" parentKey="TreeTab3" inherits="ACClasslessTreeButtonTemplate" text="Unholy">
                         <Size x="120" y="40"/>
                         <Anchors>
-                            <Anchor point="LEFT" relativeTo="$parentTreeTab2" relativePoint="RIGHT" x="10"
+                            <Anchor point="LEFT" relativeTo="ClasslessTreeTab2" relativePoint="RIGHT" x="10"
                                     y="0"/>
                         </Anchors>
                         <Scripts>
@@ -372,10 +376,22 @@
                         </Scripts>
                     </Button>
 
-                    <Button name="$parentGlyph" parentKey="GlyphTab" inherits="ACClasslessTreeButtonTemplate" text="Glyph">
+                    <Button name="ClasslessGlyphTab" parentKey="GlyphTab" inherits="ACClasslessTreeButtonTemplate" text="Glyph">
                         <Size x="120" y="40"/>
                         <Anchors>
-                            <Anchor point="LEFT" relativeTo="$parentTreeTab3" relativePoint="RIGHT" x="10"
+                            <Anchor point="LEFT" relativeTo="ClasslessTreeTab3" relativePoint="RIGHT" x="10"
+                                    y="0"/>
+                        </Anchors>
+                        <Scripts>
+                            <OnLoad>self:SetID(4);</OnLoad>
+                            <OnClick>ACClassless_SelectGlyph(self);</OnClick>
+                        </Scripts>
+                    </Button>
+
+                    <Button name="ClasslessPetTab" parentKey="PetTab" inherits="ACClasslessTreeButtonTemplate" text="Pet">
+                        <Size x="120" y="40"/>
+                        <Anchors>
+                            <Anchor point="LEFT" relativeTo="ClasslessGlyphTab" relativePoint="RIGHT" x="10"
                                     y="0"/>
                         </Anchors>
                         <Scripts>
@@ -386,7 +402,7 @@
                 </Frames>
             </Frame>
 
-            <Frame name="$parentSpellbookFrame" parentKey="SpellbookFrame">
+            <Frame name="ClasslessSpellbookFrame" parentKey="SpellbookFrame">
                 <Size x="500" y="500"/>
                 <Anchors>
                     <Anchor point="BOTTOMLEFT" x="0" y="0"/>
@@ -459,13 +475,6 @@
                         <HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
                     </Button>
 
-                    <FontString name="$parentPageText" inherits="GameFontNormal">
-                        <Anchors>
-                            <Anchor point="LEFT" relativeTo="$parentNextPage" relativePoint="RIGHT" x="12"
-                                    y="0"/>
-                        </Anchors>
-                        <Text>Page 1</Text>
-                    </FontString>
 
                     <!-- Spell grid anchor -->
                     <Frame name="$parentGrid">
@@ -480,7 +489,7 @@
                 </Scripts>
             </Frame>
 
-            <Frame name="$parentTalentFrame" parentKey="TalentFrame">
+            <Frame name="ClasslessTalentFrame" parentKey="TalentFrame">
                 <Size x="500" y="500"/>
                 <Anchors>
                     <Anchor point="BOTTOMRIGHT" x="0"
@@ -544,11 +553,42 @@
 
 
                     <!-- Container where you’ll create talent buttons dynamically -->
-                    <Frame name="$parentTreeContainer">
+                    <Frame name="ClasslessTalentTree" parentKey="TalentTree">
                         <Anchors>
                             <Anchor point="TOPLEFT"/>
                         </Anchors>
                         <Size x="500" y="450"/>
+                        <Frames>
+                            <Button name="ClasslessTalent1" parentKey="Talent1" inherits="ClasslessTalentButtonTemplate">
+                                <Size x="32" y="32"/>
+                                <Layers>
+                                    <Layer level="ARTWORK">
+                                        <FontString name="$parentSpentPointsText" parentKey="SpentPointsText"
+                                                    inherits="GameFontNormal" text="Arcane Talents: 12" justifyH="LEFT">
+                                            <Size x="0" y="20"/>
+                                            <Anchors>
+                                                <Anchor point="LEFT" x="20" y="0"/>
+                                            </Anchors>
+                                        </FontString>
+                                        <FontString name="$parentTalentPointsText" parentKey="TalentPointsText"
+                                                    inherits="GameFontNormal" text="Unspent points: 12"
+                                                    justifyH="RIGHT">
+                                            <Size x="0" y="20"/>
+                                            <Anchors>
+                                                <Anchor point="RIGHT" x="-20" y="0"/>
+                                            </Anchors>
+                                        </FontString>
+                                    </Layer>
+                                </Layers>
+                            </Button>
+                            <Button name="ClasslessTalent1" parentKey="Talent1" inherits="ClasslessTalentButtonTemplate">
+                                <Size x="32" y="32"/>
+                                <Anchors>
+                                    <Anchor point="TOPLEFT" relativeTo="ClasslessTalentTree" relativePoint="TOPLEFT" x="0"
+                                            y="0"/>
+                                </Anchors>
+                            </Button>
+                        </Frames>
                     </Frame>
                 </Frames>
 
