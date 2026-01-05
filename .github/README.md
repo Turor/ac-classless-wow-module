@@ -17,14 +17,18 @@ unlocked achievements. There is currently no cap- although a configuration setti
 
 ## TODOS
 - A UI mod to allow players to select talents from any tree
-- A UI mod to allow players to see their mana, rage, energy, TODO runic power, TODO runes
-- Fix warrior, rogue, and death knight mana
 - A UI mod to allow players to access all their spells.
 - Configuration setting to set talent cap
 - Overhaul the pet system
+
+- Portal Master to dungeons
+- Teleport spell to atrain/htrain
 - Movement speed QoL spell (AuraInterruptFlags 32)
-- Increase out of combat mana regen?
-- Make Shaman Totem UI work for all classes
+- TotemBar added to bartender for every class
+  - Totem vendor
+  - Modify totems to not be soulbound or bind on pickup and be destroyable
+- MythicPlus
+- AuctionHousePlus
 
 ## Useful commands
 - cargo run -p wow_custom_dbc -- wrath -o /usr/games/wow/server/data -i /usr/games/wow/

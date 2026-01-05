@@ -53,6 +53,7 @@ local.properties
 #
 Commands.md
 
-/Examples/
-Examples/
-Examples/*
+/UIMods/Examples/
+UIMods/Examples/
+UIMods/Examples/*
+UIMods/patch-n/DBFilesClient/*
