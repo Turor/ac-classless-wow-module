@@ -1,0 +1,54 @@
+-- Twin Disciplines
+select id, Spell.effect_aura_0, Spell.effect_misc_value_0, spell.proc_type_mask, Spell.effect_spell_class_mask_a_0, Spell.effect_spell_class_mask_b_0,
+       Spell.effect_spell_class_mask_c_0, name_lang_en_gb, description_lang_en_gb
+from Spell where id in (47586,47587,47588,52802,52803);
+
+update Spell
+set effect_aura_0 = 79, effect_misc_value_0 = 126, effect_spell_class_mask_a_0=0, effect_spell_class_mask_b_0=0, effect_spell_class_mask_c_0=0,
+    description_lang_en_gb = 'Increases the damage and healing done by your spells by $s1%.'
+where id in (47586,47587,47588,52802,52803);
+
+update Spell
+set effect_aura_1 = 118, effect_misc_value_1 = 126, effect_spell_class_mask_a_1=0, effect_spell_class_mask_b_1=0, effect_spell_class_mask_c_1=0
+where id in (47586,47587,47588,52802,52803);
+-- Focused Power (Works? - Needs Testing)
+-- Focused Will (WORKS)
+-- Holy Specialization
+select id, Spell.effect_aura_0, Spell.effect_misc_value_0, spell.proc_type_mask, Spell.effect_spell_class_mask_a_0, Spell.effect_spell_class_mask_b_0,
+       Spell.effect_spell_class_mask_c_0, name_lang_en_gb, description_lang_en_gb
+from Spell where id in (14889,15008,15009,15010,15011);
+
+update Spell
+set effect_aura_0 = 57, effect_misc_value_0 = 126, effect_spell_class_mask_a_0=0, effect_spell_class_mask_b_0=0, effect_spell_class_mask_c_0=0
+where id in (14889,15008,15009,15010,15011);
+-- Blessed Resilience (WORKS)
+-- Test of Faith (Too hard to change, likely works)
+-- Darkness
+select id, Spell.effect_aura_0, Spell.effect_misc_value_0, spell.proc_type_mask, Spell.effect_spell_class_mask_a_0, Spell.effect_spell_class_mask_b_0,
+       Spell.effect_spell_class_mask_c_0, name_lang_en_gb, description_lang_en_gb
+from Spell where id in (15259,15307,15308,15309,15310);
+
+update Spell
+set effect_aura_0 = 79, effect_misc_value_0 = 32, effect_spell_class_mask_a_0=0, effect_spell_class_mask_b_0=0, effect_spell_class_mask_c_0=0
+where id in (14889,15008,15009,15010,15011);
+
+-- Shadow Focus
+select id, Spell.effect_aura_0, Spell.effect_misc_value_0, spell.proc_type_mask, Spell.effect_spell_class_mask_a_0, Spell.effect_spell_class_mask_b_0,
+       Spell.effect_spell_class_mask_c_0, name_lang_en_gb, description_lang_en_gb
+from Spell where id in (15260,15327,15328);
+
+update Spell
+set effect_aura_0 = 55, effect_misc_value_0 = 126, effect_spell_class_mask_a_0=0, effect_spell_class_mask_b_0=0, effect_spell_class_mask_c_0=0,
+    description_lang_en_gb='Increases your chance to hit with all your spells by $s1%, and reduces the mana cost of your Shadow spells by $s2%.'
+where id in (15260,15327,15328);
+
+-- Shadow Reach
+select id, Spell.effect_aura_0, Spell.effect_misc_value_0, spell.proc_type_mask, Spell.effect_spell_class_mask_a_0, Spell.effect_spell_class_mask_b_0,
+       Spell.effect_spell_class_mask_c_0, name_lang_en_gb, description_lang_en_gb
+from Spell where id in (17322,17323);
+
+update Spell
+set description_lang_en_gb='Increases the range of your offensive Shadow Priest spells by $s1%.'
+where id in (17322,17323);
+
+-- Shadow Weaving (WORKS)
