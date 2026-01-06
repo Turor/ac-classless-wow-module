@@ -5,13 +5,13 @@
 [worldserver]
 
 ########################################
-# My module configuration
+# Classless configuration
 ########################################
 #
-#    MyModule.Enable
-#        Description: Enable my module and print "Hello World" message at server start
+#    ClasslessModule.Enable
+#        Description: Enable classless wow module
 #        Default:     0 - Disabled
 #                     1 - Enabled
 #
 
-MyModule.Enable = 1
+ClasslessModule.Enable = 1

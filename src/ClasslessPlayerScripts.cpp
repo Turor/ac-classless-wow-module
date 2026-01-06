@@ -20,7 +20,7 @@ void ClasslessPlayerScripts::SetTalentYieldAchievements(std::unordered_set<uint3
 }
 
 void ClasslessPlayerScripts::OnPlayerLogin(Player *player) {
-    if (sConfigMgr->GetOption<bool>("MyModule.Enable", false))
+    if (sConfigMgr->GetOption<bool>("ClasslessModule.Enable", false))
         ChatHandler(player->GetSession()).PSendSysMessage(HELLO_WORLD);
 }
 
