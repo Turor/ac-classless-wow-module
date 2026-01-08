@@ -26,7 +26,7 @@ set effect_aura_1 = 79, effect_misc_value_1 = 126, effect_spell_class_mask_a_1=0
 where id in (51466,51470);
 
 -- Tidal Mastery
-select id, Spell.effect_aura_0, Spell.effect_misc_value_0, spell.proc_type_mask, Spell.effect_spell_class_mask_a_0, Spell.effect_spell_class_mask_b_0,
+select id, Spell.effect_die_sides_0, Spell.effect_base_points_0, Spell.effect_aura_0, Spell.effect_misc_value_0, spell.proc_type_mask, Spell.effect_spell_class_mask_a_0, Spell.effect_spell_class_mask_b_0,
        Spell.effect_spell_class_mask_c_0, name_lang_en_gb, description_lang_en_gb
 from Spell where id in (16194,16218,16219,16220,16221);
 
@@ -34,6 +34,11 @@ update Spell
 set effect_aura_0 = 57, effect_misc_value_0 = 126, effect_spell_class_mask_a_0=0, effect_spell_class_mask_b_0=0, effect_spell_class_mask_c_0=0, effect_base_points_0 = 1,
     description_lang_en_gb = 'Increases the critical effect chance of your spells by $s1%.'
 where id in (16194,16218,16219,16220,16221);
+
+update Spell set effect_base_points_0 = 3 where id = 16218;
+update Spell set effect_base_points_0 = 5 where id = 16219;
+update Spell set effect_base_points_0 = 7 where id = 16220;
+update Spell set effect_base_points_0 = 9 where id = 16221;
 
 -- Purification
 select id, Spell.effect_aura_0, Spell.effect_misc_value_0, spell.proc_type_mask, Spell.effect_spell_class_mask_a_0, Spell.effect_spell_class_mask_b_0,
@@ -52,3 +57,4 @@ from Spell where id in (51554,51555);
 update Spell
 set effect_aura_0 = 57, effect_misc_value_0 = 126, effect_spell_class_mask_a_0=0, effect_spell_class_mask_b_0=0, effect_spell_class_mask_c_0=0
 where id in (51554,51555);
+

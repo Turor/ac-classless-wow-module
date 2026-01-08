@@ -50,3 +50,9 @@ set effect_aura_0 = 163, effect_misc_value_0 = 16, effect_spell_class_mask_a_0=9
 where id in (35578,35581);
 
 -- REDO fire talents if needed
+
+-- Improved Frost Bolt
+-- Cold as Ice
+-- Improved Fireball
+-- Incineration
+-- Improved Fire Blast

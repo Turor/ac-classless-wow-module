@@ -17,3 +17,4 @@ update Spell
 set description_lang_en_gb='Increases the damage and healing done by your periodic nature spell damage and healing effects by $s1%.'
 where id in (57810,57811, 57812,57813,57814);
 -- Nature's Grace (WORKS- Needs testing)
+-- Starlight Wrath
