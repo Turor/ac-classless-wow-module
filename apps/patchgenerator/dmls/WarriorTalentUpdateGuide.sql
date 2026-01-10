@@ -1,0 +1,2 @@
+-- Blood Frenzy to increase ranged haste
+-- Flurry ranged haste and proc

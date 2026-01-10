@@ -44,3 +44,7 @@ update Spell set effect_base_points_1 = 1 where id = 14139;
 update Spell set effect_base_points_1 = 2 where id = 14140;
 update Spell set effect_base_points_1 = 3 where id = 14141;
 update Spell set effect_base_points_1 = 4 where id = 14142;
+
+-- Lightning Reflexes to have ranged haste
+-- Savage combat to increase ranged attack power
+-- Deadliness to increase ranged attack power
