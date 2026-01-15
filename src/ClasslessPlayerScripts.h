@@ -19,6 +19,9 @@ public:
     void OnPlayerCalculateTalentsPoints(Player const* player, uint32& talentPointsForLevel) override;
     bool OnUpdateAttackPowerAndDamageReplaceWithAlternativeCalculation(Player* player, bool ranged) override;
     bool OnPlayerHasActivePowerType(Player const* player, Powers power) override;
+    bool OnPlayerUpdateParryUseAlternative(Player* player) override;
+    /*bool OnPlayerUpdateBlock(Player const* player) override; */
+    bool OnPlayerUpdateDodgeUseAlternative(Player* player) override;
 
 private:
     std::unordered_set<uint32> achievements_which_yield_talents_;

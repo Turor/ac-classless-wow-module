@@ -1662,6 +1662,26 @@ function UpdatePaperdollStats(prefix, index)
 	end
 end
 
+-- function ComputePetBonus(stat, value)
+-- 	local temp, unitClass = UnitClass("pet");
+-- 	unitClass = strupper(unitClass);
+-- 	if( unitClass == "WARLOCK" ) then
+-- 		if( WARLOCK_PET_BONUS[stat] ) then
+-- 			return value * WARLOCK_PET_BONUS[stat];
+-- 		else
+-- 			return 0;
+-- 		end
+-- 	elseif( unitClass == "HUNTER" ) then
+-- 		if( HUNTER_PET_BONUS[stat] ) then
+-- 			return value * HUNTER_PET_BONUS[stat];
+-- 		else
+-- 			return 0;
+-- 		end
+-- 	end
+--
+-- 	return 0;
+-- end
+
 function ComputePetBonus(stat, value)
 	local temp, unitClass = UnitClass("player");
 	unitClass = strupper(unitClass);
@@ -1672,13 +1692,13 @@ function ComputePetBonus(stat, value)
 			return 0;
 		end
 	elseif( unitClass == "HUNTER" ) then
-		if( HUNTER_PET_BONUS[stat] ) then 
+		if( HUNTER_PET_BONUS[stat] ) then
 			return value * HUNTER_PET_BONUS[stat];
 		else
 			return 0;
 		end
 	end
-	
+
 	return 0;
 end
 

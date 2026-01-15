@@ -3,6 +3,7 @@
  */
 
 #include "ClasslessPlayerScripts.h"
+#include "ClasslessUnitScripts.h"
 
 void AddClasslessDatastoreInitializationScripts(ClasslessPlayerScripts*);
 
@@ -10,5 +11,6 @@ void Addac_classless_wow_moduleScripts()
 {
     ClasslessPlayerScripts* classless_player_scripts = AddClasslessPlayerScripts();
     AddClasslessDatastoreInitializationScripts(classless_player_scripts);
+    ClasslessUnitScripts* classless_unit_scripts = AddClasslessUnitScripts();
 }
 

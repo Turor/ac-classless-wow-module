@@ -8,6 +8,8 @@ update Spell
 set effect_aura_0 = 163, effect_misc_value_0 = 126, effect_spell_class_mask_a_0=997, effect_spell_class_mask_b_0=0, effect_spell_class_mask_c_0=0
 where id in (16089,60184,60185,60187,60188);
 
+update Spell set description_lang_en_gb = 'Increases the critical strike damage bonus of your spells by $s1%.' where id in (16089,60184,60185,60187,60188);
+
 -- Elemental Focus (WORKS)
 -- Novas sharing cooldown??
 -- Fire Blast and Fire Shock sharing same cooldowns??
