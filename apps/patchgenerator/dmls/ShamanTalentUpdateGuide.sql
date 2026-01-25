@@ -63,19 +63,19 @@ where id in (51554,51555);
 -- Mental Dexterity needs effect 2 with 212
 select * from spell where id in (51883,51884,51885);
 
-select id,
+select id, effect_0, effect_1,
        effect_aura_0, effect_die_sides_0, effect_base_points_0, implicit_target_a_0, effect_bonus_coefficient_0, effect_chain_amplitude_0, effect_misc_value_0, effect_misc_value_b_0,
        effect_aura_1, effect_die_sides_1, effect_base_points_1, implicit_target_a_1, effect_bonus_coefficient_1, effect_chain_amplitude_1, effect_misc_value_1, effect_misc_value_b_1,
        name_lang_en_gb, description_lang_en_gb
 from Spell where id in (51883,51884,51885);
 
 update Spell
-Set effect_aura_1 = 212, effect_misc_value_1=3, effect_misc_value_b_1=3, effect_die_sides_1=1, implicit_target_a_1=1, /*effect_base_points_1=0,*/ effect_bonus_coefficient_1=0, effect_chain_amplitude_1=1,
+Set effect_1=6,effect_aura_1 = 212, effect_misc_value_1=3, effect_misc_value_b_1=3, effect_die_sides_1=1, implicit_target_a_1=1, /*effect_base_points_1=0,*/ effect_bonus_coefficient_1=0, effect_chain_amplitude_1=1,
     description_lang_en_gb = 'Increases your Ranged and Melee Attack Power by $s1% of your Intellect.'
 where id in (51883,51884,51885);
 
-update Spell set effect_base_points_1 = 99 where id = 51883;
-update Spell set effect_base_points_1 = 199 where id = 51884;
-update Spell set effect_base_points_1 = 299 where id = 51885;
+update Spell set effect_base_points_1 = 32, effect_base_points_0=32 where id = 51883;
+update Spell set effect_base_points_1 = 65, effect_base_points_0=65 where id = 51884;
+update Spell set effect_base_points_1 = 99, effect_base_points_0=99 where id = 51885;
 
 -- Shaman Flurry to proc on ranged crits and add ranged haste

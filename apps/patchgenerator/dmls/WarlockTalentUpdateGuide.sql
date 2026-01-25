@@ -28,3 +28,4 @@ from Spell where id in (47236,47237,47238,47239,47240);
 update Spell
 set effect_aura_0 = 79, effect_misc_value_0 = 126, effect_spell_class_mask_a_0=0, effect_spell_class_mask_b_0=0, effect_spell_class_mask_c_0=0
 where id in (47236,47237,47238,47239,47240);
+
