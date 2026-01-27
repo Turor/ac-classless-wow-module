@@ -1,0 +1,1 @@
+select * from spell_bonus_data where entry in (467,782,1075,8914,9756,9910,26992,53307);

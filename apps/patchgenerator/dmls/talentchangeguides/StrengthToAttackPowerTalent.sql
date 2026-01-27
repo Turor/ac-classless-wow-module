@@ -505,3 +505,6 @@ delete from talent where id in (2286);
 
 
 
+
+
+

@@ -29,3 +29,8 @@ update Spell
 set effect_aura_0 = 79, effect_misc_value_0 = 126, effect_spell_class_mask_a_0=0, effect_spell_class_mask_b_0=0, effect_spell_class_mask_c_0=0
 where id in (47236,47237,47238,47239,47240);
 
+-- Improved demonic Tactics  up to 100% at max level
+-- Demonic Resilience, up to 33% mitigation at max level
+-- Unholy Power, Up to 100% at max level
+-- Fel Vitality up to 10% per level
+--
