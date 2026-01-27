@@ -14,12 +14,109 @@ local strlen = strlen;
 local tinsert = tinsert;
 local tremove = tremove;
 
-local function RecalculateSkillLineTabs()
-	
+local isHunterPet = {
+    ["Bat"] = true,
+    ["Bear"] = true,
+    ["Bird of Prey"] = true,
+    ["Boar"] = true,
+    ["Carrion Bird"] = true,
+    ["Cat"] = true,
+    ["Chimaera"] = true,
+    ["Core Hound"] = true,
+
+    ["Crab"] = true,
+    ["Crocolisk"] = true,
+    ["Devilsaur"] = true,
+    ["Dragonhawk"] = true,
+    ["Gorilla"] = true,
+    ["Hyena"] = true,
+    ["Moth"] = true,
+    ["Nether Ray"] = true,
+
+    ["Raptor"] = true,
+    ["Ravager"] = true,
+    ["Rhino"] = true,
+    ["Scorpid"] = true,
+    ["Serpent"] = true,
+    ["Silithid"] = true,
+    ["Spider"] = true,
+    ["Spirit Beast"] = true,
+
+    ["Sporebat"] = true,
+    ["Tallstrider"] = true,
+    ["Turtle"] = true,
+    ["Warp Stalker"] = true,
+    ["Wasp"] = true,
+    ["Wind Serpent"] = true,
+    ["Wolf"] = true,
+    ["Worm"] = true,
+}
+
+local isNotHunterPet = {
+    ["Doomguard"] = true,
+    ["Felguard"] = true,
+    ["Felhunter"] = true,
+    ["Ghoul"] = true,
+    ["Imp"] = true,
+    ["Remote Control"] = true,
+    ["Succubus"] = true,
+    ["Voidwalker"] = true,
+}
+
+-- Return if pet exists, then if the pet is a hunterPet, then if pet is a permanent pet (always true for hunter pets)s
+function ClasslessHasPetUI()
+    local family = UnitCreatureFamily("pet")
+    if family then
+        if isHunterPet[family] then
+            return true, true, true
+        elseif isNotHunterPet[family] then
+            return true, false, true
+        else
+            return true, false, false
+        end
+    end
+    return false, false, false
 end
 
+function ClasslessGetNumPetSpells()
+    local count = 0
+    local i = 1
+
+    while count < 50 do -- Abort at 50
+        local name = GetSpellName(i, BOOKTYPE_PET)
+        if not name then
+            break
+        end
+        count = count + 1
+        i = i + 1
+    end
+
+    return count
+end
+
+-- Total number of pet spells, Token - DEMON or PET
+function ClasslessHasPetSpells()
+    local petExists, isHunterPet, isPermanent = ClasslessHasPetUI();
+    if petExists then
+        local petToken = "";
+        if isPermanent then
+            if isHunterPet then
+                petToken = "PET";
+            else
+                petToken = "DEMON";
+            end
+        end
+
+        return ClasslessGetNumPetSpells(), petToken
+    end
+end
+
+--function ClasslessCountPetSpells()
+--
+--end
+
 function ToggleSpellBook(bookType)
-	if ( not HasPetSpells() and bookType == BOOKTYPE_PET ) then
+	if ( not ClasslessHasPetSpells() and bookType == BOOKTYPE_PET ) then
 		return;
 	end
 	
@@ -209,11 +306,11 @@ function SpellBookFrame_Update(showing)
     end
 
     -- Setup tabs
-    local hasPetSpells, petToken = HasPetSpells();
+    local classlessHasPetSpells, classlessPetToken = ClasslessHasPetSpells();
     SpellBookFrame.petTitle = nil;
-    if ( hasPetSpells ) then
+    if ( classlessHasPetSpells ) then
         SpellBookFrame_SetTabType(SpellBookFrameTabButton1, BOOKTYPE_SPELL);
-        SpellBookFrame_SetTabType(SpellBookFrameTabButton2, BOOKTYPE_PET, petToken);
+        SpellBookFrame_SetTabType(SpellBookFrameTabButton2, BOOKTYPE_PET, classlessPetToken);
     else
         SpellBookFrame_SetTabType(SpellBookFrameTabButton1, BOOKTYPE_SPELL);
 
@@ -297,12 +394,11 @@ function SpellBookFrame_UpdatePages()
 		SpellBookNextPageButton:Enable();
 	end
 	SpellBookPageText:SetFormattedText(PAGE_NUMBER, currentPage);
-	-- Hide spell rank checkbox if the player is a rogue or warrior
-	local _, class = UnitClass("player");
+	-- Hide spell rank checkbox if the player is a rogue or warrior;
 	local showSpellRanks = true;
-	if ( class == "ROGUE" or class == "WARRIOR" ) then
-		showSpellRanks = false;
-	end
+	--if ( class == "ROGUE" or class == "WARRIOR" ) then
+	--	showSpellRanks = false;
+	--end
 	if ( SpellBookFrame.bookType == BOOKTYPE_SPELL and showSpellRanks ) then
 		ShowAllSpellRanksCheckBox:Show();
 	else
@@ -508,7 +604,7 @@ function SpellButton_UpdateButton(self)
 	if ( not SpellBookFrame.selectedSkillLine ) then
 		SpellBookFrame.selectedSkillLine = 1;
 	end
-	local temp, texture, offset, numSpells = SpellBook_GetTabInfo(SpellBookFrame.selectedSkillLine);
+    local temp, texture, offset, numSpells = SpellBook_GetTabInfo(SpellBookFrame.selectedSkillLine);
 	SpellBookFrame.selectedSkillLineOffset = offset;
 
 	local id, displayID = SpellBook_GetSpellID(self:GetID());
@@ -692,25 +788,28 @@ function SpellBook_GetSpellID(id)
 end
 
 function SpellBook_UpdatePageArrows()
-	local currentPage, maxPages = SpellBook_GetCurrentPage();
-	if ( currentPage == 1 ) then
-		SpellBookPrevPageButton:Disable();
-	else
-		SpellBookPrevPageButton:Enable();
-	end
-	if ( currentPage == maxPages ) then
-		SpellBookNextPageButton:Disable();
-	else
-		SpellBookNextPageButton:Enable();
-	end
+    local currentPage, maxPages = SpellBook_GetCurrentPage();
+    if (currentPage == 1) then
+        SpellBookPrevPageButton:Disable();
+    else
+        SpellBookPrevPageButton:Enable();
+    end
+    if (currentPage == maxPages) then
+        SpellBookNextPageButton:Disable();
+    else
+        SpellBookNextPageButton:Enable();
+    end
 end
+
+
 
 function SpellBook_GetCurrentPage()
 	local currentPage, maxPages;
-	local numPetSpells = HasPetSpells();
+    --local numPetSpells = HasPetSpells();
+	local classlessNumPetSpells = ClasslessHasPetSpells();
 	if ( SpellBookFrame.bookType == BOOKTYPE_PET ) then
 		currentPage = SPELLBOOK_PAGENUMBERS[BOOKTYPE_PET];
-		maxPages = ceil(numPetSpells/SPELLS_PER_PAGE);
+		maxPages = ceil(classlessNumPetSpells/SPELLS_PER_PAGE);
 	else
 		currentPage = SPELLBOOK_PAGENUMBERS[SpellBookFrame.selectedSkillLine];
 		local name, texture, offset, numSpells = SpellBook_GetTabInfo(SpellBookFrame.selectedSkillLine);
@@ -820,31 +919,3 @@ function SpellBook_SkillTabOverflow(skilltab_pagenum)
 
   
 end
-
-function Asc_SpellBookFrame_SetTabType(tabButton, bookType, token)
-    if ( bookType == BOOKTYPE_SPELL ) then
-        tabButton.bookType = BOOKTYPE_SPELL;
-        tabButton:SetText(SPELLBOOK);
-        tabButton:SetFrameLevel(SpellBookFrame:GetFrameLevel() + 1);
-        tabButton.binding = "TOGGLESPELLBOOK";
-    elseif ( bookType == BOOKTYPE_PET ) then
-        tabButton.bookType = BOOKTYPE_PET;
-        tabButton:SetText(COMBATLOG_FILTER_STRING_MY_PET);
-        tabButton:SetFrameLevel(SpellBookFrame:GetFrameLevel() + 1);
-        tabButton.binding = "TOGGLEPETBOOK";
-        SpellBookFrame.petTitle = COMBATLOG_FILTER_STRING_MY_PET;
-    else
-        tabButton.bookType = INSCRIPTION;
-        tabButton:SetText(GLYPHS);
-        tabButton:SetFrameLevel(SpellBookFrame:GetFrameLevel() + 2);
-        tabButton.binding = "TOGGLEINSCRIPTION";
-    end
-    if ( SpellBookFrame.bookType == bookType ) then
-        tabButton:Disable();
-    else
-        tabButton:Enable();
-    end
-    tabButton:Show();
-end
-
-SpellBookFrame_SetTabType = Asc_SpellBookFrame_SetTabType

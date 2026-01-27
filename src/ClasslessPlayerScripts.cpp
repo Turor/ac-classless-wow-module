@@ -391,6 +391,93 @@ bool ClasslessPlayerScripts::OnPlayerUpdateDodgeUseAlternative(Player *player) {
     return false;
 }
 
+void ClasslessPlayerScripts::OnPlayerBeforeGuardianInitStatsForLevel(Player* /*player*/, Guardian* guardian, CreatureTemplate const* cinfo, PetType& petType) {
+    if (sConfigMgr->GetOption<bool>("ClasslessModule.Enable", false)) {
+        if (guardian->IsPet()) {
+            switch (cinfo->Entry) {
+                case NPC_IMP:
+                case NPC_VOIDWALKER:
+                case NPC_FELGUARD:
+                case NPC_FELHUNTER:
+                case NPC_SUCCUBUS:
+                case NPC_RISEN_GHOUL:
+                case NPC_WATER_ELEMENTAL_PERM:
+                    petType = SUMMON_PET;
+                    break;
+                default:
+                    petType = HUNTER_PET;
+                    break;
+            }
+        }
+    }
+}
+
+void ClasslessPlayerScripts::OnPlayerAfterGuardianInitStatsForLevel(Player *, Guardian *guardian) {
+    if (sConfigMgr->GetOption<bool>("ClasslessModule.Enable", false)) {
+        // -- 8875, 19580, 19581, 19582, 19589, 19590, 34666, 34667, 34675, 55566
+        if (guardian->IsPet()) {
+            if (!guardian->IsHunterPet()) { // Add Hunter Pet Scaling Auras
+                guardian->AddAura(8875, guardian);  // Total Damage Done
+                guardian->AddAura(19580, guardian); // Base Armor Percent
+                guardian->AddAura(19581, guardian); // Max Health
+                guardian->AddAura(19582, guardian); // Speed
+                guardian->AddAura(19589, guardian); // Focus Regeneration
+                guardian->AddAura(19590, guardian); // Critical Strike Chance
+                guardian->AddAura(34666, guardian); // Chance to Hit
+                guardian->AddAura(34667, guardian); // Dodge Chance
+                guardian->AddAura(34675, guardian); // Attack Speed
+                guardian->AddAura(55566, guardian); // All Element Resistance
+            }
+            if (guardian->GetEntry() != NPC_IMP &&
+                guardian->GetEntry() != NPC_VOIDWALKER &&
+                guardian->GetEntry() != NPC_FELGUARD &&
+                guardian->GetEntry() != NPC_FELHUNTER &&
+                guardian->GetEntry() != NPC_SUCCUBUS ) {
+
+                // Damage Done
+                guardian->AddAura(18727, guardian);
+                guardian->AddAura(18728, guardian);
+                guardian->AddAura(18729, guardian);
+                guardian->AddAura(18730, guardian);
+                guardian->AddAura(30148, guardian);
+
+                // Stamina
+                guardian->AddAura(18735, guardian);
+                guardian->AddAura(18736, guardian);
+                guardian->AddAura(18737, guardian);
+                guardian->AddAura(18738, guardian);
+                guardian->AddAura(30148, guardian);
+
+                // Intellect
+                guardian->AddAura(18739, guardian);
+                guardian->AddAura(18740, guardian);
+                guardian->AddAura(18741, guardian);
+                guardian->AddAura(18742, guardian);
+                guardian->AddAura(30149, guardian);
+                }
+            if (guardian->GetEntry() != NPC_RISEN_GHOUL) {
+                guardian->AddAura(SPELL_DK_PET_SCALING_01, guardian);
+                guardian->AddAura(SPELL_DK_PET_SCALING_02, guardian);
+                guardian->AddAura(SPELL_DK_PET_SCALING_03, guardian);
+            }
+            // if (guardian->GetEntry() != NPC_FIRE_ELEMENTAL) {
+            //     guardian->AddAura(SPELL_FIRE_ELEMENTAL_SCALING_01, guardian);
+            //     guardian->AddAura(SPELL_FIRE_ELEMENTAL_SCALING_02, guardian);
+            //     guardian->AddAura(SPELL_FIRE_ELEMENTAL_SCALING_03, guardian);
+            //     guardian->AddAura(SPELL_FIRE_ELEMENTAL_SCALING_04, guardian);
+            // }
+            // if (guardian->GetEntry() != NPC_EARTH_ELEMENTAL) {
+            //     guardian->AddAura(SPELL_EARTH_ELEMENTAL_SCALING_01, guardian);
+            //     guardian->AddAura(SPELL_EARTH_ELEMENTAL_SCALING_02, guardian);
+            //     guardian->AddAura(SPELL_EARTH_ELEMENTAL_SCALING_03, guardian);
+            //     guardian->AddAura(SPELL_EARTH_ELEMENTAL_SCALING_04, guardian);
+            // }
+
+        }
+    }
+}
+
+
 
 ClasslessPlayerScripts *AddClasslessPlayerScripts() {
     auto *cps = new ClasslessPlayerScripts(); // ScriptMgr takes ownership

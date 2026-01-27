@@ -13,6 +13,7 @@
 -- Tamed Pet Passive 09: 34667 - Dodge Chance
 -- Tamed Pet Passive 10: 34675 - Attack Speed
 -- Tamed Pet Passive 11: 55566 - All element Resistance
+-- 8875, 19580, 19581, 19582, 19589, 19590, 34666, 34667, 34675, 55566
 
 -- select id from spell where effect_misc_value_0 = 1 and name_lang_en_gb like '%Tamed Pet%'; -- agility
 -- select * from Faction where name_lang_en_gb like '%Dalaran%';
@@ -31,3 +32,8 @@ set effect_1=6, effect_aura_1 = 107, effect_misc_value_1 = 8, effect_spell_class
     effect_2=6, effect_aura_2 = 107, effect_misc_value_2 = 8, effect_spell_class_mask_a_2=134217728, effect_spell_class_mask_b_2=0, effect_spell_class_mask_c_2=0, effect_base_points_2 = 99, effect_die_sides_2=1, implicit_target_a_2=1, effect_chain_amplitude_2=1, effect_bonus_coefficient_2=1,
     description_lang_en_gb = 'You master the art of Beast training, teaching you the ability to tame Exotic pets and increasing your total pets damage by $s2% and maximum health by $s3%.'
 where id in (53270);
+
+select SkillLine.display_name_lang_en_gb, spell.name_lang_en_gb, spell.id, SkillLineAbility.* from SkillLineAbility
+join SkillLine on SkillLine.id = SkillLineAbility.skill_line
+join Spell on Spell.id = SkillLineAbility.spell
+where spell.name_lang_en_gb like '%Call%';

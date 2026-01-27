@@ -114,6 +114,70 @@ local VERTICAL_FLYOUTS = { [16] = true, [17] = true, [18] = true }
 
 local itemSlotButtons = {};
 
+local isHunterPet = {
+    ["Bat"] = true,
+    ["Bear"] = true,
+    ["Bird of Prey"] = true,
+    ["Boar"] = true,
+    ["Carrion Bird"] = true,
+    ["Cat"] = true,
+    ["Chimaera"] = true,
+    ["Core Hound"] = true,
+
+    ["Crab"] = true,
+    ["Crocolisk"] = true,
+    ["Devilsaur"] = true,
+    ["Dragonhawk"] = true,
+    ["Gorilla"] = true,
+    ["Hyena"] = true,
+    ["Moth"] = true,
+    ["Nether Ray"] = true,
+
+    ["Raptor"] = true,
+    ["Ravager"] = true,
+    ["Rhino"] = true,
+    ["Scorpid"] = true,
+    ["Serpent"] = true,
+    ["Silithid"] = true,
+    ["Spider"] = true,
+    ["Spirit Beast"] = true,
+
+    ["Sporebat"] = true,
+    ["Tallstrider"] = true,
+    ["Turtle"] = true,
+    ["Warp Stalker"] = true,
+    ["Wasp"] = true,
+    ["Wind Serpent"] = true,
+    ["Wolf"] = true,
+    ["Worm"] = true,
+}
+
+local isNotHunterPet = {
+    ["Doomguard"] = true,
+    ["Felguard"] = true,
+    ["Felhunter"] = true,
+    ["Ghoul"] = true,
+    ["Imp"] = true,
+    ["Remote Control"] = true,
+    ["Succubus"] = true,
+    ["Voidwalker"] = true,
+}
+
+-- Return if pet exists, then if the pet is a hunterPet, then if pet is a permanent pet (always true for hunter pets)s
+function ClasslessHasPetUI()
+    local family = UnitCreatureFamily("pet")
+    if family then
+        if isHunterPet[family] then
+            return true, true, true
+        elseif isNotHunterPet[family] then
+            return true, false, true
+        else
+            return true, false, false
+        end
+    end
+    return false, false, false
+end
+
 function PaperDollFrame_OnLoad (self)
 	self:RegisterEvent("PLAYER_ENTERING_WORLD");
 	self:RegisterEvent("CHARACTER_POINTS_CHANGED");
@@ -1683,23 +1747,19 @@ end
 -- end
 
 function ComputePetBonus(stat, value)
-	local temp, unitClass = UnitClass("player");
-	unitClass = strupper(unitClass);
-	if( unitClass == "WARLOCK" ) then
-		if( WARLOCK_PET_BONUS[stat] ) then
-			return value * WARLOCK_PET_BONUS[stat];
-		else
-			return 0;
-		end
-	elseif( unitClass == "HUNTER" ) then
-		if( HUNTER_PET_BONUS[stat] ) then
-			return value * HUNTER_PET_BONUS[stat];
-		else
-			return 0;
-		end
-	end
-
-	return 0;
+    hasPet, isHunterPet, isPermanent = ClasslessHasPetUI();
+    if hasPet then
+        if isHunterPet then
+            if ( HUNTER_PET_BONUS[stat] ) then
+                return value * HUNTER_PET_BONUS[stat];
+            end
+        else
+            if (WARLOCK_PET_BONUS[stat] and isPermanent) then
+                return value * WARLOCK_PET_BONUS[stat]
+            end
+        end
+    end
+    return 0
 end
 
 PDFITEMFLYOUT_ITEMS_PER_ROW = 5;
