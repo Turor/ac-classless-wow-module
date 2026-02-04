@@ -439,7 +439,7 @@ void ClasslessPlayerScripts::OnPlayerAfterGuardianInitStatsForLevel(Player *, Gu
                 guardian->AddAura(18728, guardian);
                 guardian->AddAura(18729, guardian);
                 guardian->AddAura(18730, guardian);
-                guardian->AddAura(30148, guardian);
+                guardian->AddAura(30147, guardian);
 
                 // Stamina
                 guardian->AddAura(18735, guardian);
@@ -454,7 +454,9 @@ void ClasslessPlayerScripts::OnPlayerAfterGuardianInitStatsForLevel(Player *, Gu
                 guardian->AddAura(18741, guardian);
                 guardian->AddAura(18742, guardian);
                 guardian->AddAura(30149, guardian);
-                }
+
+                guardian->AddAura(35697, guardian); // % Damage reduction
+            }
             if (guardian->GetEntry() != NPC_RISEN_GHOUL) {
                 guardian->AddAura(SPELL_DK_PET_SCALING_01, guardian);
                 guardian->AddAura(SPELL_DK_PET_SCALING_02, guardian);

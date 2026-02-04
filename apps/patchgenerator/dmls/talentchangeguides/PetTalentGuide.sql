@@ -37,3 +37,6 @@ select SkillLine.display_name_lang_en_gb, spell.name_lang_en_gb, spell.id, Skill
 join SkillLine on SkillLine.id = SkillLineAbility.skill_line
 join Spell on Spell.id = SkillLineAbility.spell
 where spell.name_lang_en_gb like '%Call%';
+
+-- To create summoner types remove from attributes ex dismiss pet first from
+-- 688, 697, 712, 691, 30146,

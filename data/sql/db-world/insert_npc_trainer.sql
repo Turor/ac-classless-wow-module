@@ -19,4 +19,5 @@ values
     (200018, 3599, 0, 0, 0, 10, 0),  -- 3599 Searing Totem
     (200018, 8071, 0, 0, 0, 4, 0)  -- 8071 Stoneskin Totem
 ;
+-- Growl and Maul
 
