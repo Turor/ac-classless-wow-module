@@ -24,7 +24,7 @@ void ClasslessPlayerScripts::OnPlayerLogin(Player *player) {
         ChatHandler(player->GetSession()).PSendSysMessage(HELLO_WORLD);
 }
 
-Optional<bool> ClasslessPlayerScripts::OnPlayerIsClass(Player const *, Classes, ClassContext context) {
+Optional<bool> ClasslessPlayerScripts::OnPlayerIsClass(Player const *, Classes classes, ClassContext context) {
     if (sConfigMgr->GetOption<bool>("ClasslessModule.Enable", false)) {
         switch (context) {
             case CLASS_CONTEXT_QUEST:
@@ -38,6 +38,8 @@ Optional<bool> ClasslessPlayerScripts::OnPlayerIsClass(Player const *, Classes, 
             case CLASS_CONTEXT_WEAPON_SWAP:
             case CLASS_CONTEXT_CLASS_TRAINER:
                 return true;
+            case CLASS_CONTEXT_PET:
+                if (classes == CLASS_HUNTER) return true;
             default:
                 return std::nullopt;
         }
