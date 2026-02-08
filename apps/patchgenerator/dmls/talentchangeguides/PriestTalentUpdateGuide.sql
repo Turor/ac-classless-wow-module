@@ -71,3 +71,17 @@ update spell set effect_base_points_0=44 where id=33223;
 update spell set effect_base_points_0=59 where id=33224;
 update spell set effect_base_points_0=74 where id=33225;
 
+-- Revert Devouring Plague to RAW
+select id, effect_0,
+       effect_aura_0, effect_die_sides_0, effect_base_points_0, implicit_target_a_0, effect_bonus_coefficient_0, effect_chain_amplitude_0, effect_misc_value_0, effect_misc_value_b_0,
+       effect_spell_class_mask_a_0, effect_spell_class_mask_a_1, effect_spell_class_mask_a_2,
+       effect_aura_1, effect_die_sides_1, effect_base_points_1, implicit_target_a_1, effect_bonus_coefficient_1, effect_chain_amplitude_1, effect_misc_value_1, effect_misc_value_b_1,
+       effect_spell_class_mask_b_0, effect_spell_class_mask_b_1, effect_spell_class_mask_b_2,
+       name_lang_en_gb, description_lang_en_gb
+from Spell where id in (63625,63626,63627);
+
+update spell set effect_base_points_0=4, effect_base_points_1=10 where id=63625;
+update spell set effect_base_points_0=9, effect_base_points_1=21 where id=63626;
+update spell set effect_base_points_0=14, effect_base_points_1=32 where id=63627;
+
+
