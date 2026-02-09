@@ -7,7 +7,7 @@
 #include "ClasslessUnitScripts.h"
 #include "ClasslessDatastoreInitializationScripts.h"
 
-void Addac_classless_wow_moduleScripts()
+void Addmod_classlessScripts()
 {
     ClasslessPlayerScripts* classless_player_scripts = AddClasslessPlayerScripts();
     AddClasslessDatastoreInitializationScripts(classless_player_scripts);
