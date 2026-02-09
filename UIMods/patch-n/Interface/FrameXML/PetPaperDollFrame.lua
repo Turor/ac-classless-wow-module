@@ -40,6 +40,44 @@ local isHunterPet = {
     ["Worm"] = true,
 }
 
+local hunterPetFoodTypes = {
+    ["Bat"] = "Fruit, Fungus, Meat, Raw Meat",
+    ["Bear"] = "Bread, Cheese, Fish, Fruit, Fungus, Meat, Raw Meat, Raw Fish",
+    ["Bird of Prey"] = "Fish, Meat, Raw Meat, Raw Fish",
+    ["Boar"] = "Bread, Cheese, Fish, Fruit, Fungus, Meat, Raw Meat, Raw Fish",
+    ["Carrion Bird"] = "Fish, Meat, Raw Meat, Raw Fish",
+    ["Cat"] = "Fish, Meat, Raw Meat, Raw Fish",
+    ["Chimaera"] = "Meat, Raw Meat",
+    ["Core Hound"] = "Meat, Raw Meat",
+
+    ["Crab"] = "Bread, Fish, Fruit, Fungus, Raw Fish",
+    ["Crocolisk"] = "Fish, Meat, Raw Meat, Raw Fish",
+    ["Devilsaur"] = "Meat, Raw Meat",
+    ["Dragonhawk"] = "Fish, Fruit, Meat, Raw Meat, Raw Fish",
+    ["Gorilla"] = "Bread, Fruit, Fungus",
+    ["Hyena"] = "Meat, Raw Meat",
+    ["Moth"] = "Bread, Cheese, Fruit, Fungus",
+    ["Nether Ray"] = "Fungus, Meat, Raw Meat",
+
+    ["Raptor"] = "Meat, Raw Meat",
+    ["Ravager"] = "Meat, Raw Meat",
+    ["Rhino"] = "Not sure",
+    ["Scorpid"] = "Meat, Raw Meat",
+    ["Serpent"] = "Meat, Raw Meat",
+    ["Silithid"] = "Fungus, Meat, Raw Meat",
+    ["Spider"] = "Meat, Raw Meat",
+    ["Spirit Beast"] = "Fish, Meat, Raw Meat, Raw Fish",
+
+    ["Sporebat"] = "Bread, Cheese, Fruit, Fungus",
+    ["Tallstrider"] = "Bread, Cheese, Fruit, Fungus",
+    ["Turtle"] = "Bread, Fish, Fruit, Fungus, Raw Fish",
+    ["Warp Stalker"] = "Fish, Fruit, Raw Fish",
+    ["Wasp"] = "Bread, Cheese, Fruit, Fungus",
+    ["Wind Serpent"] = "Bread, Cheese, Fish, Raw Fish",
+    ["Wolf"] = "Meat, Raw Meat",
+    ["Worm"] = "Bread, Cheese, Fungus",
+}
+
 local isNotHunterPet = {
     ["Doomguard"] = true,
     ["Felguard"] = true,
@@ -50,6 +88,16 @@ local isNotHunterPet = {
     ["Succubus"] = true,
     ["Voidwalker"] = true,
 }
+
+function ClasslessGetPetFoodTypes()
+    local family = UnitCreatureFamily("pet")
+    if family then
+        if hunterPetFoodTypes[family] then
+            return hunterPetFoodTypes[family]
+        end
+    end
+    return "Unknown"
+end
 
 -- Return if pet exists, then if the pet is a hunterPet, then if pet is a permanent pet (always true for hunter pets)s
 function ClasslessHasPetUI()
@@ -91,7 +139,19 @@ function PetPaperDollFrame_OnLoad (self)
 	self:RegisterEvent("SPELL_UPDATE_COOLDOWN");
 	self:RegisterEvent("UNIT_ENTERED_VEHICLE");
 	self:RegisterEvent("UNIT_EXITED_VEHICLE");
-	self:RegisterEvent("PET_SPELL_POWER_UPDATE");
+    self:RegisterEvent("PET_SPELL_POWER_UPDATE");
+
+    PetPaperDollPetInfo:HookScript("OnEnter", function(frame)
+        GameTooltip:SetOwner(frame, "ANCHOR_RIGHT")
+
+        local foodList = ClasslessGetPetFoodTypes()
+        if foodList then
+            GameTooltip:SetText(format(PET_DIET_TEMPLATE, foodList))
+        end
+    end)
+
+    PetPaperDollPetInfo:HookScript("OnLeave", GameTooltip_Hide)
+
 
 	PetPaperDollFrameCompanionFrame.mode = "CRITTER";
 	PetPaperDollFrameCompanionFrame.idMount = GetCompanionInfo("MOUNT", 1);
@@ -550,7 +610,7 @@ function PetPaperDollFrame_Update()
 	PaperDollFrame_SetAttackPower(PetAttackPowerFrame, "Pet");
 	PetPaperDollFrame_SetSpellBonusDamage();
 
-	if ( canGainXP ) then
+	if ( isHunterPet ) then
 		PetPaperDollPetInfo:Show();
 	else
 		PetPaperDollPetInfo:Hide();
