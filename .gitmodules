@@ -10,3 +10,6 @@
 [submodule "apps/transmog"]
 	path = apps/transmog
 	url = https://github.com/DanieltheDeveloper/azerothcore-transmog-3.3.5a.git
+[submodule "apps/teleporter"]
+	path = apps/teleporter
+	url = https://github.com/araxiaonline/Teleporter.git

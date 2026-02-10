@@ -97,7 +97,7 @@ bool ClasslessPlayerScripts::OnPlayerLearnTalentUseAlternativeLogic(Player *play
                 const PlayerTalentMap &talentMap = player->GetTalentMap();
                 for (auto const &it: talentMap)
                     if (TalentSpellPos const *pos = GetTalentSpellPos(it.first))
-                        if (TalentEntry const *t = sTalentStore.LookupEntry(pos->talent_id))
+                        if (sTalentStore.LookupEntry(pos->talent_id))
                             if (it.second->State != PLAYERSPELL_REMOVED && it.second->IsInSpec(player->GetActiveSpec()))
                                 spentPoints += pos->rank + 1;
             }
@@ -296,7 +296,7 @@ bool ClasslessPlayerScripts::OnUpdateAttackPowerAndDamageReplaceWithAlternativeC
     return false;
 }
 
-bool ClasslessPlayerScripts::OnPlayerHasActivePowerType(Player const *player, Powers power) {
+bool ClasslessPlayerScripts::OnPlayerHasActivePowerType(Player const */*player*/, Powers /*power*/) {
     if (sConfigMgr->GetOption<bool>("ClasslessModule.Enable", false)) {
         return true;
     }
