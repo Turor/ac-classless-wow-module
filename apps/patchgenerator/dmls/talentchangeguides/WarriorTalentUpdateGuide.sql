@@ -16,5 +16,9 @@ where id in (29836,29859);
 update Spell set effect_base_points_2=4 where id in (29836);
 update Spell set effect_base_points_2=9 where id in (29859);
 
--- Flurry ranged haste and proc
+-- Update titan grip to work for every item type
+select equipped_item_subclass, description_lang_en_gb from spell where id in (46917);
+update spell set equipped_item_subclass = -1, description_lang_en_gb='Allows you to equip two-handed weapons in one hand.  While you have a two-handed weapon equipped in one hand, your damage done is reduced by $49152s1%.' where id in (46917);
+update spell set effect_misc_value_0=127 where id=49152;
+
 

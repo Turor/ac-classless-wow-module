@@ -24,7 +24,7 @@ void ClasslessPlayerScripts::OnPlayerLogin(Player *player) {
         ChatHandler(player->GetSession()).PSendSysMessage(HELLO_WORLD);
 }
 
-Optional<bool> ClasslessPlayerScripts::OnPlayerIsClass(Player const *, Classes, ClassContext context) {
+Optional<bool> ClasslessPlayerScripts::OnPlayerIsClass(Player const *, Classes classes, ClassContext context) {
     if (sConfigMgr->GetOption<bool>("ClasslessModule.Enable", false)) {
         switch (context) {
             case CLASS_CONTEXT_QUEST:
@@ -37,6 +37,10 @@ Optional<bool> ClasslessPlayerScripts::OnPlayerIsClass(Player const *, Classes, 
             case CLASS_CONTEXT_EQUIP_ARMOR_CLASS:
             case CLASS_CONTEXT_WEAPON_SWAP:
             case CLASS_CONTEXT_CLASS_TRAINER:
+             // 233 of Pet.cpp might be an issue, not sure if we can allow Death Knight broadly, it might short circuit
+                return true;
+            case CLASS_CONTEXT_PET:
+                if (classes == CLASS_DEATH_KNIGHT) return std::nullopt;
                 return true;
             default:
                 return std::nullopt;
@@ -93,7 +97,7 @@ bool ClasslessPlayerScripts::OnPlayerLearnTalentUseAlternativeLogic(Player *play
                 const PlayerTalentMap &talentMap = player->GetTalentMap();
                 for (auto const &it: talentMap)
                     if (TalentSpellPos const *pos = GetTalentSpellPos(it.first))
-                        if (TalentEntry const *t = sTalentStore.LookupEntry(pos->talent_id))
+                        if (sTalentStore.LookupEntry(pos->talent_id))
                             if (it.second->State != PLAYERSPELL_REMOVED && it.second->IsInSpec(player->GetActiveSpec()))
                                 spentPoints += pos->rank + 1;
             }
@@ -292,7 +296,7 @@ bool ClasslessPlayerScripts::OnUpdateAttackPowerAndDamageReplaceWithAlternativeC
     return false;
 }
 
-bool ClasslessPlayerScripts::OnPlayerHasActivePowerType(Player const *player, Powers power) {
+bool ClasslessPlayerScripts::OnPlayerHasActivePowerType(Player const */*player*/, Powers /*power*/) {
     if (sConfigMgr->GetOption<bool>("ClasslessModule.Enable", false)) {
         return true;
     }
@@ -390,6 +394,95 @@ bool ClasslessPlayerScripts::OnPlayerUpdateDodgeUseAlternative(Player *player) {
     }
     return false;
 }
+
+void ClasslessPlayerScripts::OnPlayerBeforeGuardianInitStatsForLevel(Player* /*player*/, Guardian* guardian, CreatureTemplate const* cinfo, PetType& petType) {
+    if (sConfigMgr->GetOption<bool>("ClasslessModule.Enable", false)) {
+        if (guardian->IsPet()) {
+            switch (cinfo->Entry) {
+                case NPC_IMP:
+                case NPC_VOIDWALKER:
+                case NPC_FELGUARD:
+                case NPC_FELHUNTER:
+                case NPC_SUCCUBUS:
+                case NPC_RISEN_GHOUL:
+                case NPC_WATER_ELEMENTAL_PERM:
+                    petType = SUMMON_PET;
+                    break;
+                default:
+                    petType = HUNTER_PET;
+                    break;
+            }
+        }
+    }
+}
+
+void ClasslessPlayerScripts::OnPlayerAfterGuardianInitStatsForLevel(Player *, Guardian *guardian) {
+    if (sConfigMgr->GetOption<bool>("ClasslessModule.Enable", false)) {
+        // -- 8875, 19580, 19581, 19582, 19589, 19590, 34666, 34667, 34675, 55566
+        if (guardian->IsPet()) {
+            if (!guardian->IsHunterPet()) { // Add Hunter Pet Scaling Auras
+                if (!guardian->HasAura(8875)) guardian->AddAura(8875, guardian);  // Total Damage Done
+                if (!guardian->HasAura(19580)) guardian->AddAura(19580, guardian); // Base Armor Percent
+                if (!guardian->HasAura(19581)) guardian->AddAura(19581, guardian); // Max Health
+                if (!guardian->HasAura(19582)) guardian->AddAura(19582, guardian); // Speed
+                if (!guardian->HasAura(19589)) guardian->AddAura(19589, guardian); // Focus Regeneration
+                if (!guardian->HasAura(19590)) guardian->AddAura(19590, guardian); // Critical Strike Chance
+                if (!guardian->HasAura(34666)) guardian->AddAura(34666, guardian); // Chance to Hit
+                if (!guardian->HasAura(34667)) guardian->AddAura(34667, guardian); // Dodge Chance
+                if (!guardian->HasAura(34675)) guardian->AddAura(34675, guardian); // Attack Speed
+                if (!guardian->HasAura(55566)) guardian->AddAura(55566, guardian); // All Element Resistance
+            }
+            if (guardian->GetEntry() != NPC_IMP &&
+                guardian->GetEntry() != NPC_VOIDWALKER &&
+                guardian->GetEntry() != NPC_FELGUARD &&
+                guardian->GetEntry() != NPC_FELHUNTER &&
+                guardian->GetEntry() != NPC_SUCCUBUS ) {
+
+                // Damage Done
+                if (!guardian->HasAura(18727)) guardian->AddAura(18727, guardian);
+                if (!guardian->HasAura(18728)) guardian->AddAura(18728, guardian);
+                if (!guardian->HasAura(18729)) guardian->AddAura(18729, guardian);
+                if (!guardian->HasAura(18730)) guardian->AddAura(18730, guardian);
+                if (!guardian->HasAura(30147)) guardian->AddAura(30147, guardian);
+
+                // Stamina
+                if (!guardian->HasAura(18735)) guardian->AddAura(18735, guardian);
+                if (!guardian->HasAura(18736)) guardian->AddAura(18736, guardian);
+                if (!guardian->HasAura(18737)) guardian->AddAura(18737, guardian);
+                if (!guardian->HasAura(18738)) guardian->AddAura(18738, guardian);
+                if (!guardian->HasAura(30148)) guardian->AddAura(30148, guardian);
+
+                // Intellect
+                if (!guardian->HasAura(18739)) guardian->AddAura(18739, guardian);
+                if (!guardian->HasAura(18740)) guardian->AddAura(18740, guardian);
+                if (!guardian->HasAura(18741)) guardian->AddAura(18741, guardian);
+                if (!guardian->HasAura(18742)) guardian->AddAura(18742, guardian);
+                if (!guardian->HasAura(30149)) guardian->AddAura(30149, guardian);
+
+                if (!guardian->HasAura(35697)) guardian->AddAura(35697, guardian); // % Damage reduction
+            }
+            if (guardian->GetEntry() != NPC_RISEN_GHOUL) {
+                if (!guardian->HasAura(SPELL_DK_PET_SCALING_01)) guardian->AddAura(SPELL_DK_PET_SCALING_01, guardian);
+                if (!guardian->HasAura(SPELL_DK_PET_SCALING_02)) guardian->AddAura(SPELL_DK_PET_SCALING_02, guardian);
+                if (!guardian->HasAura(SPELL_DK_PET_SCALING_03)) guardian->AddAura(SPELL_DK_PET_SCALING_03, guardian);
+            }
+            // if (guardian->GetEntry() != NPC_FIRE_ELEMENTAL) {
+            //     guardian->AddAura(SPELL_FIRE_ELEMENTAL_SCALING_01, guardian);
+            //     guardian->AddAura(SPELL_FIRE_ELEMENTAL_SCALING_02, guardian);
+            //     guardian->AddAura(SPELL_FIRE_ELEMENTAL_SCALING_03, guardian);
+            //     guardian->AddAura(SPELL_FIRE_ELEMENTAL_SCALING_04, guardian);
+            // }
+            // if (guardian->GetEntry() != NPC_EARTH_ELEMENTAL) {
+            //     guardian->AddAura(SPELL_EARTH_ELEMENTAL_SCALING_01, guardian);
+            //     guardian->AddAura(SPELL_EARTH_ELEMENTAL_SCALING_02, guardian);
+            //     guardian->AddAura(SPELL_EARTH_ELEMENTAL_SCALING_03, guardian);
+            //     guardian->AddAura(SPELL_EARTH_ELEMENTAL_SCALING_04, guardian);
+            // }
+
+        }
+    }
+}
+
 
 
 ClasslessPlayerScripts *AddClasslessPlayerScripts() {

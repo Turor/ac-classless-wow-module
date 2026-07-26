@@ -22,6 +22,8 @@ public:
     bool OnPlayerUpdateParryUseAlternative(Player* player) override;
     /*bool OnPlayerUpdateBlock(Player const* player) override; */
     bool OnPlayerUpdateDodgeUseAlternative(Player* player) override;
+    void OnPlayerBeforeGuardianInitStatsForLevel(Player* /*player*/, Guardian* guardian, CreatureTemplate const* cinfo, PetType& petType) override;
+    void OnPlayerAfterGuardianInitStatsForLevel(Player* /*player*/, Guardian* guardian) override;
 
 private:
     std::unordered_set<uint32> achievements_which_yield_talents_;
