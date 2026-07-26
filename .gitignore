@@ -52,3 +52,8 @@ local.properties
 # Scratch pads
 #
 Commands.md
+
+/UIMods/Examples/
+UIMods/Examples/
+UIMods/Examples/*
+UIMods/patch-n/DBFilesClient/*
